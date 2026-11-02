@@ -1,0 +1,95 @@
+/* ==========================================================
+   Report group component
+   Usage: fragment reportGroup(title, tag, items)
+     items: list of maps { code, name, sub, state }
+     state: 'done' | 'pending' | 'na'
+   ========================================================== */
+
+:root {
+  --rg-bg: #ffffff;
+  --rg-border: #e2e8f0;
+  --rg-hover: #f8fafc;
+  --rg-muted: #94a3b8;
+  --rg-code-bg: #eef2ff;
+  --rg-code-fg: #3730a3;
+  --rg-accent: #16a34a;
+}
+
+.report-group {
+  background: var(--rg-bg);
+  border: 1px solid var(--rg-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.report-group-head {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.report-group-head h2 { font-size: 16px; }
+.report-group-tag {
+  font-size: 11px;
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+.report-progress { height: 6px; background: #f1f5f9; border-radius: 999px; margin: 6px 20px 14px; overflow: hidden; }
+.report-progress > div { height: 100%; background: #22c55e; border-radius: 999px; }
+
+.report-section {
+  padding: 6px 20px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--rg-muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.report-rows { padding: 8px 12px 12px; }
+
+.report-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+}
+.report-row:hover { background: var(--rg-hover); }
+
+.report-code {
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--rg-code-bg);
+  color: var(--rg-code-fg);
+  padding: 4px 8px;
+  border-radius: 6px;
+  min-width: 64px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.report-name { font-size: 14px; flex: 1; min-width: 0; }
+.report-name small { display: block; color: var(--rg-muted); font-size: 12px; }
+
+.report-status { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.report-status.status-done    { background: #dcfce7; color: #15803d; }
+.report-status.status-pending { background: #fef3c7; color: #b45309; }
+.report-status.status-na      { background: #f1f5f9; color: #64748b; }
+
+.report-run {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--rg-border);
+  background: #fff;
+  color: var(--rg-accent);
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.report-run:hover { background: var(--rg-accent); color: #fff; }

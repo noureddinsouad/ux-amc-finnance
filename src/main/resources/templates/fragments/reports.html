@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Report fragments</title>
+  <link rel="stylesheet" href="../../static/css/reports.css" th:href="@{/css/reports.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Report group fragment.
+     Usage (items supplied by the controller):
+       <section th:replace="~{fragments/reports :: reportGroup(
+           'DSF ACAPS — Génération des Rapports', '13 rapports',
+           ${rapportsAcaps}, 62, 'Dossiers ACAPS')}"></section>
+
+     items: list of maps/objects with { code, name, sub, state }
+            state: 'done' | 'pending' | 'na'
+     progressPct: 0-100, or null to hide the progress bar
+     sectionLabel: group label, or null to hide
+     Requires: /css/reports.css
+     ============================================================ -->
+<section class="report-group"
+         th:fragment="reportGroup(title, tag, items, progressPct, sectionLabel)">
+
+  <div class="report-group-head">
+    <h2 th:text="${title}">DSF ACAPS — Génération des Rapports</h2>
+    <span class="report-group-tag" th:if="${tag != null}" th:text="${tag}">13 rapports</span>
+  </div>
+
+  <div class="report-progress" th:if="${progressPct != null}">
+    <div th:style="|width:${progressPct}%|"></div>
+  </div>
+
+  <div class="report-section" th:if="${sectionLabel != null}"
+       th:text="${sectionLabel}">Dossiers ACAPS</div>
+
+  <div class="report-rows">
+    <div class="report-row" th:each="r : ${items}" th:object="${r}">
+      <span class="report-code" th:text="*{code}">D10</span>
+      <span class="report-name">
+        <span th:text="*{name}">DSF D10</span>
+        <small th:if="*{sub != null}" th:text="*{sub}">État des provisions</small>
+      </span>
+      <span class="report-status"
+            th:classappend="|status-*{state}|"
+            th:text="*{state == 'done'}    ? '✔ Terminé' :
+                     (*{state == 'pending'} ? '⏳ En attente' : '— Non lancé')">✔ Terminé</span>
+      <button type="button" class="report-run"
+              th:title="|Générer *{name}|"
+              th:attr="data-report-code=*{code}">▶</button>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

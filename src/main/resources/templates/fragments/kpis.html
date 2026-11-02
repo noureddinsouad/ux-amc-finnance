@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>KPI fragments</title>
+  <link rel="stylesheet" href="../../static/css/kpi.css" th:href="@{/css/kpi.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     KPI fragments.
+     Single card:
+       <div th:replace="~{fragments/kpis :: kpiCard(
+           'Rapports générés', '13 / 21', '▲ 62% du lot', 'ok')}"></div>
+     Params: label, value, delta, tone ('ok'|'warn'|'error'|'')
+     Grid wrapper: wrap cards in <div class="kpi-grid">…</div>
+     Requires: /css/kpi.css
+     ============================================================ -->
+<div class="kpi" th:fragment="kpiCard(label, value, delta, tone)">
+  <div class="kpi-label" th:text="${label}">Rapports générés</div>
+  <div class="kpi-value" th:text="${value}">13 / 21</div>
+  <div class="kpi-delta" th:if="${delta != null}"
+       th:classappend="${tone}" th:text="${delta}">▲ 62% du lot</div>
+</div>
+
+</body>
+</html>
