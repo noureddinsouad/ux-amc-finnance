@@ -1,0 +1,41 @@
+/* ==========================================================
+   KPI cards component
+   Usage: fragment kpiCard(label, value, delta, tone)
+     tone: 'ok' | 'warn' | 'error' | '' (neutral)
+   ========================================================== */
+
+:root {
+  --kpi-bg: #ffffff;
+  --kpi-border: #e2e8f0;
+  --kpi-label: #64748b;
+  --kpi-value: #1e293b;
+  --kpi-ok: #16a34a;
+  --kpi-warn: #d97706;
+  --kpi-error: #dc2626;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.kpi {
+  background: var(--kpi-bg);
+  border: 1px solid var(--kpi-border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--kpi-label);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+.kpi-value { font-size: 24px; font-weight: 700; margin-top: 4px; color: var(--kpi-value); }
+.kpi-delta { font-size: 12px; margin-top: 2px; color: var(--kpi-label); }
+
+.kpi-delta.ok    { color: var(--kpi-ok); }
+.kpi-delta.warn  { color: var(--kpi-warn); }
+.kpi-delta.error { color: var(--kpi-error); }

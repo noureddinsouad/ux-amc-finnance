@@ -1,0 +1,60 @@
+/* ==========================================================
+   Topbar component
+   Usage: fragment topbar(title, crumb, invDate, invStatus)
+   ========================================================== */
+
+:root {
+  --tb-bg: #ffffff;
+  --tb-border: #e2e8f0;
+  --tb-text: #1e293b;
+  --tb-muted: #94a3b8;
+  --tb-pill-open-bg: #dcfce7;
+  --tb-pill-open-fg: #15803d;
+  --tb-pill-date-bg: #eff6ff;
+  --tb-pill-date-fg: #1d4ed8;
+}
+
+.topbar {
+  background: var(--tb-bg);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--tb-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar-crumb { color: var(--tb-muted); font-size: 13px; }
+.topbar h1 { font-size: 20px; color: var(--tb-text); }
+
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+.pill { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.pill-open   { background: var(--tb-pill-open-bg); color: var(--tb-pill-open-fg); }
+.pill-closed { background: #fee2e2; color: #b91c1c; }
+.pill-date   { background: var(--tb-pill-date-bg); color: var(--tb-pill-date-fg); }
+
+.avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: #0f2b3d;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600;
+}
+
+/* Hamburger: only visible on mobile, works with sidebar.js */
+.topbar-hamburger {
+  display: none;
+  background: #0f2b3d; color: #fff;
+  border: none; border-radius: 8px;
+  width: 38px; height: 38px;
+  font-size: 16px; cursor: pointer;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .topbar-hamburger { display: block; }
+  .topbar { padding: 12px 16px; }
+}

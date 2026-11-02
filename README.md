@@ -8,46 +8,73 @@ Reusable Thymeleaf UI components for the AMC Finance / GridApp DSF back-office.
 src/main/resources/
 ├── templates/
 │   ├── fragments/
-│   │   └── sidebar.html      # sidebar(activeMenu) fragment
-│   └── index.html            # demo page
+│   │   ├── sidebar.html      # sidebar(activeMenu)
+│   │   ├── topbar.html       # topbar(title, crumb, invDate, invStatus, initials)
+│   │   ├── kpis.html         # kpiCard(label, value, delta, tone)
+│   │   └── reports.html      # reportGroup(title, tag, items, progressPct, sectionLabel)
+│   └── index.html            # demo dashboard composing all fragments
 └── static/
-    ├── css/sidebar.css       # component styles (CSS variables theming)
-    └── js/sidebar.js         # interactivity (no dependency)
+    ├── css/                  # one stylesheet per component
+    │   ├── sidebar.css
+    │   ├── topbar.css
+    │   ├── kpi.css
+    │   └── reports.css
+    └── js/
+        └── sidebar.js        # interactivity (vanilla JS, no dependency)
 ```
 
-## Sidebar component
+## Components
 
-### Usage
-
-Include the fragment in any page and pass the active menu key:
+### Sidebar — interactive
 
 ```html
 <div th:replace="~{fragments/sidebar :: sidebar('dsf')}"></div>
 ```
 
-Load the assets once in your layout:
-
-```html
-<link rel="stylesheet" th:href="@{/css/sidebar.css}">
-<script th:src="@{/js/sidebar.js}" defer></script>
-```
-
-### Interactions
-
 | Feature | How |
 |---|---|
-| Collapse / expand | `⟨` button in the logo row — state persisted in `localStorage` |
-| Sub-menus | any `[data-submenu-toggle]` parent opens an accordion |
-| Active item | driven by the `activeMenu` fragment parameter (`th:classappend`) |
+| Collapse / expand | `⟨` button — state persisted in `localStorage` |
+| Sub-menus | `[data-submenu-toggle]` parents open accordions |
+| Active item | driven by the `activeMenu` fragment parameter |
 | Tooltips (collapsed) | from each item's `data-tooltip` attribute |
-| Mobile overlay | hamburger with `data-sidebar-open`; scrim / `Esc` closes |
+| Mobile overlay | any button with `data-sidebar-open`; scrim / `Esc` closes |
 
-### Theming
+### Topbar
 
-Override the CSS variables in `:root` (`--sb-bg`, `--sb-accent`, `--sb-width`, …).
+```html
+<header th:replace="~{fragments/topbar :: topbar(
+    'Automatisation DSF', 'Home / Batch DSF', '30/09/2022', 'OUVERT', 'NS')}"></header>
+```
 
-### Static preview
+Breadcrumb + title, inventory date pill, status pill (`OUVERT` → green, otherwise red),
+user avatar. Includes the mobile hamburger wired to the sidebar.
 
-The templates use "natural templating": open
-`src/main/resources/templates/index.html` directly in a browser to preview
-without a Spring server.
+### KPI card
+
+```html
+<div class="kpi-grid">
+  <div th:replace="~{fragments/kpis :: kpiCard('Rapports générés', '13 / 21', '▲ 62% du lot', 'ok')}"></div>
+</div>
+```
+
+`tone`: `ok` (green) | `warn` (amber) | `error` (red) | empty (neutral).
+
+### Report group
+
+```html
+<section th:replace="~{fragments/reports :: reportGroup(
+    'DSF ACAPS — Génération des Rapports', '13 rapports', ${rapportsAcaps}, 62, 'Dossiers ACAPS')}"></section>
+```
+
+`items`: list of `{ code, name, sub, state }` with `state` = `done` | `pending` | `na`.
+Renders status badge + per-report ▶ run button (`data-report-code` attribute for JS hooks).
+Pass `progressPct = null` to hide the progress bar.
+
+## Theming
+
+Every component exposes CSS variables in `:root` (`--sb-*`, `--tb-*`, `--kpi-*`, `--rg-*`).
+
+## Static preview
+
+Natural templating: open `src/main/resources/templates/index.html` directly in a
+browser — the fallback markup renders the full dashboard without a Spring server.

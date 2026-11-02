@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Topbar fragment</title>
+  <link rel="stylesheet" href="../../static/css/topbar.css" th:href="@{/css/topbar.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Reusable topbar fragment.
+     Usage:
+       <header th:replace="~{fragments/topbar :: topbar(
+           'Automatisation DSF', 'Home / Batch DSF',
+           '30/09/2022', 'OUVERT', 'NS')}"></header>
+     Params: title, crumb, invDate, invStatus ('OUVERT'|'FERMÉ'), initials
+     Requires: /css/topbar.css (hamburger works with /js/sidebar.js)
+     ============================================================ -->
+<header class="topbar"
+        th:fragment="topbar(title, crumb, invDate, invStatus, initials)">
+
+  <button type="button" class="topbar-hamburger" data-sidebar-open
+          aria-label="Ouvrir le menu">☰</button>
+
+  <div>
+    <div class="topbar-crumb" th:text="${crumb} ?: 'Home'">Home / Batch DSF</div>
+    <h1 th:text="${title} ?: 'Page'">Automatisation DSF</h1>
+  </div>
+
+  <div class="topbar-actions">
+    <span class="pill pill-date"
+          th:if="${invDate != null}"
+          th:text="'📅 Inventaire : ' + ${invDate}">📅 Inventaire : 30/09/2022</span>
+    <span class="pill"
+          th:if="${invStatus != null}"
+          th:classappend="${invStatus == 'OUVERT'} ? 'pill-open' : 'pill-closed'"
+          th:text="'● ' + ${invStatus}">● OUVERT</span>
+    <div class="avatar" th:text="${initials} ?: 'NS'">NS</div>
+  </div>
+</header>
+
+</body>
+</html>

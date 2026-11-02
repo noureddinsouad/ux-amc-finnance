@@ -5,23 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Automatisation DSF</title>
   <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+  <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
+  <link rel="stylesheet" href="../static/css/kpi.css" th:href="@{/css/kpi.css}">
+  <link rel="stylesheet" href="../static/css/reports.css" th:href="@{/css/reports.css}">
   <style>
+    /* Page-level layout only — components live in their own CSS files */
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
     body { background:#f4f6f9; color:#1e293b; display:flex; min-height:100vh; }
-    .main { flex:1; padding:24px 28px; }
-    .topbar { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
-    .hamburger { display:none; background:#0f2b3d; color:#fff; border:none; border-radius:8px;
-                 width:38px; height:38px; font-size:16px; cursor:pointer; }
-    @media (max-width:768px){ .hamburger{ display:block; } }
-    .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; max-width:640px; }
-    code { background:#f1f5f9; padding:2px 6px; border-radius:6px; font-size:13px; }
+    .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+    .content { padding:26px 28px; }
+    .toolbar { display:flex; gap:12px; align-items:center; margin-bottom:22px; flex-wrap:wrap; }
+    .field { display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #e2e8f0;
+             border-radius:10px; padding:9px 14px; font-size:14px; }
+    .field input { border:none; outline:none; font-size:14px; width:130px; }
+    .search { flex:1; min-width:220px; } .search input { width:100%; }
+    .btn { padding:10px 16px; border-radius:10px; border:none; font-size:14px; font-weight:600; cursor:pointer; }
+    .btn.primary { background:#16a34a; color:#fff; }
+    .btn.ghost { background:#fff; border:1px solid #e2e8f0; color:#475569; }
+    .grid { display:grid; grid-template-columns:1.3fr 1fr; gap:20px; align-items:start; margin-top:24px; }
+    @media (max-width:1024px){ .grid { grid-template-columns:1fr; } }
+    .footer { text-align:center; color:#94a3b8; font-size:12px; padding:18px; margin-top:auto; }
   </style>
 </head>
 <body>
 
-  <!-- Reusable sidebar: pass the active menu key -->
+  <!-- ===== Sidebar (reusable) ===== -->
   <div th:replace="~{fragments/sidebar :: sidebar('dsf')}">
-    <!-- Static preview fallback (opened without a Thymeleaf server) -->
+    <!-- Static preview fallback -->
     <aside class="sidebar" id="appSidebar">
       <div class="sidebar-logo">
         <span class="logo-mark">▦</span><span class="logo-text">GridApp DSF</span>
@@ -51,16 +61,89 @@
   </div>
 
   <div class="main">
-    <div class="topbar">
-      <button class="hamburger" data-sidebar-open aria-label="Ouvrir le menu">☰</button>
-      <h1>Automatisation DSF</h1>
+
+    <!-- ===== Topbar (reusable) ===== -->
+    <div th:replace="~{fragments/topbar :: topbar('Automatisation DSF','Home / Batch DSF','30/09/2022','OUVERT','NS')}">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" data-sidebar-open>☰</button>
+        <div>
+          <div class="topbar-crumb">Home / Batch DSF</div>
+          <h1>Automatisation DSF</h1>
+        </div>
+        <div class="topbar-actions">
+          <span class="pill pill-date">📅 Inventaire : 30/09/2022</span>
+          <span class="pill pill-open">● OUVERT</span>
+          <div class="avatar">NS</div>
+        </div>
+      </header>
     </div>
-    <div class="card">
-      <p>La sidebar est un fragment réutilisable. Depuis n'importe quelle page :</p>
-      <p style="margin-top:10px"><code>&lt;div th:replace="~{fragments/sidebar :: sidebar('home')}"&gt;&lt;/div&gt;</code></p>
-      <p style="margin-top:10px">Essayez : le bouton <code>⟨</code> replie le menu (état persisté),
-      <code>Batch DSF</code> déroule un sous-menu, et <code>☰</code> ouvre le menu en mobile.</p>
+
+    <div class="content">
+
+      <!-- Toolbar: page-specific -->
+      <div class="toolbar">
+        <div class="field">📅 Inventaire (jj/mm/aaaa) <input value="30/09/2022"></div>
+        <button class="btn primary">▶ Générer tout</button>
+        <button class="btn ghost">↻ Recharger</button>
+        <button class="btn ghost">🗑 Vider</button>
+        <div class="field search">🔎 <input placeholder="Rechercher un rapport (ex : D13)…"></div>
+      </div>
+
+      <!-- ===== KPI cards (reusable) ===== -->
+      <div class="kpi-grid">
+        <div th:replace="~{fragments/kpis :: kpiCard('Rapports générés','13 / 21','▲ 62% du lot','ok')}">
+          <div class="kpi"><div class="kpi-label">Rapports générés</div><div class="kpi-value">13 / 21</div><div class="kpi-delta ok">▲ 62% du lot</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('Dernière exécution','09:42','Batch DSF — 02/11/2026','')}">
+          <div class="kpi"><div class="kpi-label">Dernière exécution</div><div class="kpi-value">09:42</div><div class="kpi-delta">Batch DSF — 02/11/2026</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('En attente','8','Contrôle Calcul DSF requis','warn')}">
+          <div class="kpi"><div class="kpi-label">En attente</div><div class="kpi-value">8</div><div class="kpi-delta warn">Contrôle Calcul DSF requis</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('Erreurs','0','Aucune anomalie','ok')}">
+          <div class="kpi"><div class="kpi-label">Erreurs</div><div class="kpi-value">0</div><div class="kpi-delta ok">Aucune anomalie</div></div>
+        </div>
+      </div>
+
+      <!-- ===== Report groups (reusable) ===== -->
+      <div class="grid">
+        <div th:replace="~{fragments/reports :: reportGroup('DSF ACAPS — Génération des Rapports','13 rapports',${rapportsAcaps},62,'Dossiers ACAPS')}">
+          <section class="report-group">
+            <div class="report-group-head"><h2>DSF ACAPS — Génération des Rapports</h2><span class="report-group-tag">13 rapports</span></div>
+            <div class="report-progress"><div style="width:62%"></div></div>
+            <div class="report-section">Dossiers ACAPS</div>
+            <div class="report-rows">
+              <div class="report-row"><span class="report-code">CTRL</span><span class="report-name"><span>Contrôle Calcul DSF</span><small>Vérification préalable</small></span><span class="report-status status-done">✔ Terminé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D10</span><span class="report-name"><span>DSF D10</span><small>État des provisions</small></span><span class="report-status status-done">✔ Terminé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D11</span><span class="report-name"><span>DSF D11</span><small>Sinistres par gravité</small></span><span class="report-status status-done">✔ Terminé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D12</span><span class="report-name"><span>DSF D12</span><small>Triangles de cadence</small></span><span class="report-status status-pending">⏳ En attente</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D13</span><span class="report-name"><span>DSF D13</span><small>Détail flotte</small></span><span class="report-status status-pending">⏳ En attente</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D18</span><span class="report-name"><span>DSF D18</span><small>Annexes réglementaires</small></span><span class="report-status status-na">— Non lancé</span><button class="report-run">▶</button></div>
+            </div>
+          </section>
+        </div>
+
+        <div th:replace="~{fragments/reports :: reportGroup('Compta Analytique / Autres','8 rapports',${rapportsAutres},null,null)}">
+          <section class="report-group">
+            <div class="report-group-head"><h2>Compta Analytique / Autres</h2><span class="report-group-tag">8 rapports</span></div>
+            <div class="report-section">Compta Analytique</div>
+            <div class="report-rows">
+              <div class="report-row"><span class="report-code">DOM 1</span><span class="report-name"><span>DOM 1</span><small>Périmètre DOM</small></span><span class="report-status status-done">✔ Terminé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">P/R I</span><span class="report-name"><span>Prod/Regl Intermédiaire</span></span><span class="report-status status-pending">⏳ En attente</span><button class="report-run">▶</button></div>
+            </div>
+            <div class="report-section">Autres Rapports</div>
+            <div class="report-rows">
+              <div class="report-row"><span class="report-code">D13-A</span><span class="report-name"><span>D13 Détail Auto</span></span><span class="report-status status-na">— Non lancé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D13-M</span><span class="report-name"><span>D13 Mono Flotte</span></span><span class="report-status status-na">— Non lancé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">TRIA</span><span class="report-name"><span>Triangle Cadence Autres</span></span><span class="report-status status-done">✔ Terminé</span><button class="report-run">▶</button></div>
+              <div class="report-row"><span class="report-code">D11-G</span><span class="report-name"><span>D11 avec détail gravité</span></span><span class="report-status status-pending">⏳ En attente</span><button class="report-run">▶</button></div>
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
+
+    <footer class="footer">© 2026 GridApp. All Pineapple Rights Reserved.</footer>
   </div>
 
   <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
