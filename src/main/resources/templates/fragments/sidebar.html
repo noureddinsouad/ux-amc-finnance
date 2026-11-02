@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Sidebar fragment</title>
+  <!-- Static preview path; th:href wins when served by Spring -->
+  <link rel="stylesheet" href="../../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Reusable sidebar fragment.
+     Usage from any page:
+       <div th:replace="~{fragments/sidebar :: sidebar('dsf')}"></div>
+     The argument is the key of the active menu entry.
+     Requires: /css/sidebar.css and /js/sidebar.js (deferred).
+     ============================================================ -->
+<aside class="sidebar" id="appSidebar"
+       th:fragment="sidebar(activeMenu)"
+       th:with="active=${activeMenu} ?: 'home'">
+
+  <div class="sidebar-logo">
+    <span class="logo-mark">▦</span>
+    <span class="logo-text">GridApp DSF</span>
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle
+            aria-label="Réduire le menu" title="Réduire le menu">⟨</button>
+  </div>
+
+  <nav class="sidebar-nav" aria-label="Navigation principale">
+
+    <a class="nav-item" href="../index.html" th:href="@{/}"
+       th:classappend="${active == 'home'} ? 'active'" data-tooltip="Home">
+      <span class="nav-icon">🏠</span><span class="nav-label">Home</span>
+    </a>
+
+    <!-- Item with sub-menu -->
+    <div class="nav-group" th:classappend="${active == 'dsf'} ? 'open'">
+      <button type="button" class="nav-item nav-parent" data-submenu-toggle
+              th:classappend="${active == 'dsf'} ? 'active'" data-tooltip="Batch DSF"
+              aria-expanded="false">
+        <span class="nav-icon">⚙️</span><span class="nav-label">Batch DSF</span>
+        <span class="nav-caret">▾</span>
+      </button>
+      <div class="submenu">
+        <a class="submenu-item" href="#" th:href="@{/batch/dsf/acaps}"
+           th:classappend="${active == 'dsf'} ? 'active'">DSF ACAPS</a>
+        <a class="submenu-item" href="#" th:href="@{/batch/dsf/controle}">Contrôle Calcul</a>
+        <a class="submenu-item" href="#" th:href="@{/batch/dsf/historique}">Historique</a>
+      </div>
+    </div>
+
+    <a class="nav-item" href="#" th:href="@{/batch/compta}"
+       th:classappend="${active == 'compta'} ? 'active'" data-tooltip="Batch Compta Analytique">
+      <span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span>
+    </a>
+
+    <a class="nav-item" href="#" th:href="@{/batch/autres}"
+       th:classappend="${active == 'autres'} ? 'active'" data-tooltip="Batch Autres">
+      <span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span>
+    </a>
+
+    <a class="nav-item" href="#" th:href="@{/change-password}"
+       th:classappend="${active == 'pwd'} ? 'active'" data-tooltip="Change Pwd">
+      <span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-foot">
+    <div class="foot-row"><span class="nav-icon">👤</span>
+      <span class="nav-label" th:text="${#authentication?.name} ?: 'n.souad'">n.souad</span>
+    </div>
+    <div class="foot-row"><span class="nav-icon">🟢</span>
+      <span class="nav-label">Env : Production</span>
+    </div>
+  </div>
+</aside>
+
+<script src="../../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+</body>
+</html>

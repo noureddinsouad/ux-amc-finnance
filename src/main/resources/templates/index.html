@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Automatisation DSF</title>
+  <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+    body { background:#f4f6f9; color:#1e293b; display:flex; min-height:100vh; }
+    .main { flex:1; padding:24px 28px; }
+    .topbar { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+    .hamburger { display:none; background:#0f2b3d; color:#fff; border:none; border-radius:8px;
+                 width:38px; height:38px; font-size:16px; cursor:pointer; }
+    @media (max-width:768px){ .hamburger{ display:block; } }
+    .card { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; max-width:640px; }
+    code { background:#f1f5f9; padding:2px 6px; border-radius:6px; font-size:13px; }
+  </style>
+</head>
+<body>
+
+  <!-- Reusable sidebar: pass the active menu key -->
+  <div th:replace="~{fragments/sidebar :: sidebar('dsf')}">
+    <!-- Static preview fallback (opened without a Thymeleaf server) -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-logo">
+        <span class="logo-mark">▦</span><span class="logo-text">GridApp DSF</span>
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle>⟨</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="#"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <div class="nav-group open">
+          <button type="button" class="nav-item nav-parent active" data-submenu-toggle>
+            <span class="nav-icon">⚙️</span><span class="nav-label">Batch DSF</span><span class="nav-caret">▾</span>
+          </button>
+          <div class="submenu">
+            <a class="submenu-item active" href="#">DSF ACAPS</a>
+            <a class="submenu-item" href="#">Contrôle Calcul</a>
+            <a class="submenu-item" href="#">Historique</a>
+          </div>
+        </div>
+        <a class="nav-item" href="#"><span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="foot-row"><span class="nav-icon">👤</span><span class="nav-label">n.souad</span></div>
+        <div class="foot-row"><span class="nav-icon">🟢</span><span class="nav-label">Env : Production</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="hamburger" data-sidebar-open aria-label="Ouvrir le menu">☰</button>
+      <h1>Automatisation DSF</h1>
+    </div>
+    <div class="card">
+      <p>La sidebar est un fragment réutilisable. Depuis n'importe quelle page :</p>
+      <p style="margin-top:10px"><code>&lt;div th:replace="~{fragments/sidebar :: sidebar('home')}"&gt;&lt;/div&gt;</code></p>
+      <p style="margin-top:10px">Essayez : le bouton <code>⟨</code> replie le menu (état persisté),
+      <code>Batch DSF</code> déroule un sous-menu, et <code>☰</code> ouvre le menu en mobile.</p>
+    </div>
+  </div>
+
+  <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+</body>
+</html>
