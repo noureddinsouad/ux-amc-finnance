@@ -35,9 +35,37 @@
           th:if="${invStatus != null}"
           th:classappend="${invStatus == 'OUVERT'} ? 'pill-open' : 'pill-closed'"
           th:text="'● ' + ${invStatus}">● OUVERT</span>
-    <div class="avatar" th:text="${initials} ?: 'NS'">NS</div>
+
+    <!-- User dropdown -->
+    <div class="user-menu" data-user-menu>
+      <button type="button" class="avatar" data-user-menu-toggle
+              aria-haspopup="true" aria-expanded="false"
+              aria-label="Menu utilisateur"
+              th:text="${initials} ?: 'NS'">NS</button>
+      <div class="user-dropdown" role="menu" hidden>
+        <div class="user-dropdown-head">
+          <span class="user-name" th:text="${#authentication?.name} ?: 'n.souad'">n.souad</span>
+          <span class="user-role">Administrateur</span>
+        </div>
+        <a class="user-dropdown-item" role="menuitem"
+           href="../change-password.html" th:href="@{/change-password}">
+          <span class="item-icon">🔑</span> Changer le mot de passe
+        </a>
+        <a class="user-dropdown-item" role="menuitem"
+           href="#" th:href="@{/profile}">
+          <span class="item-icon">👤</span> Mon profil
+        </a>
+        <div class="user-dropdown-sep" role="separator"></div>
+        <form method="post" action="#" th:action="@{/logout}">
+          <button type="submit" class="user-dropdown-item danger" role="menuitem">
+            <span class="item-icon">⏻</span> Logout
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 </header>
 
+<script src="../../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
 </body>
 </html>
