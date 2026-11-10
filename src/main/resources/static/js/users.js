@@ -98,6 +98,17 @@
       });
     });
 
+    // Edit buttons: navigate to the edit page (demo preview only;
+    // under Spring the edit control is a Thymeleaf link to /users/edit/{id})
+    if (document.body.hasAttribute('data-demo')) {
+      card.addEventListener('click', function (e) {
+        var btn = e.target.closest('.dt-action[title="Modifier"], .dt-action[data-user-id]:first-child');
+        if (btn && btn.tagName === 'BUTTON' && btn.hasAttribute('data-user-id')) {
+          window.location.href = 'user-edit.html?id=' + encodeURIComponent(btn.getAttribute('data-user-id'));
+        }
+      });
+    }
+
     render();
   }
 

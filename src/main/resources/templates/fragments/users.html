@@ -65,8 +65,10 @@
           <td th:text="*{lastLogin} ?: '—'">09/11/2026</td>
           <td>
             <div class="dt-actions">
-              <button type="button" class="dt-action" title="Modifier"
-                      th:attr="data-user-id=*{id}">✏️</button>
+              <a class="dt-action" title="Modifier"
+                 th:href="@{/users/edit/{id}(id=*{id})}"
+                 th:attr="data-user-id=*{id}"
+                 style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">✏️</a>
               <button type="button" class="dt-action" title="Réinitialiser le mot de passe"
                       th:attr="data-user-id=*{id}">🔑</button>
               <button type="button" class="dt-action danger" title="Supprimer"

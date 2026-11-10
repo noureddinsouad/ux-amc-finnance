@@ -17,7 +17,7 @@
     .footer { text-align:center; color:#94a3b8; font-size:12px; padding:18px; margin-top:auto; }
   </style>
 </head>
-<body>
+<body data-demo>
 
   <!-- ===== Sidebar (reusable) ===== -->
   <div th:replace="~{fragments/sidebar :: sidebar('users')}">
@@ -127,42 +127,42 @@
                   <td><span class="role-badge role-admin">Administrateur</span></td>
                   <td><span class="status-badge status-active">● Actif</span></td>
                   <td>09/11/2026</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="1">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="dt-user"><span class="avatar">AB</span><div><div class="dt-user-name">Amina Benali</div><div class="dt-user-mail">a.benali@amc.dz</div></div></div></td>
                   <td><span class="role-badge role-user">Utilisateur</span></td>
                   <td><span class="status-badge status-active">● Actif</span></td>
                   <td>08/11/2026</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="2">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="dt-user"><span class="avatar">KM</span><div><div class="dt-user-name">Karim Meziane</div><div class="dt-user-mail">k.meziane@amc.dz</div></div></div></td>
                   <td><span class="role-badge role-auditor">Auditeur</span></td>
                   <td><span class="status-badge status-active">● Actif</span></td>
                   <td>05/11/2026</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="3">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="dt-user"><span class="avatar">LB</span><div><div class="dt-user-name">Lina Boudiaf</div><div class="dt-user-mail">l.boudiaf@amc.dz</div></div></div></td>
                   <td><span class="role-badge role-user">Utilisateur</span></td>
                   <td><span class="status-badge status-inactive">○ Inactif</span></td>
                   <td>12/10/2026</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="4">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="dt-user"><span class="avatar">YD</span><div><div class="dt-user-name">Yacine Djellal</div><div class="dt-user-mail">y.djellal@amc.dz</div></div></div></td>
                   <td><span class="role-badge role-admin">Administrateur</span></td>
                   <td><span class="status-badge status-active">● Actif</span></td>
                   <td>09/11/2026</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="5">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
                 <tr>
                   <td><div class="dt-user"><span class="avatar">SH</span><div><div class="dt-user-name">Sara Haddad</div><div class="dt-user-mail">s.haddad@amc.dz</div></div></div></td>
                   <td><span class="role-badge role-user">Utilisateur</span></td>
                   <td><span class="status-badge status-inactive">○ Inactif</span></td>
                   <td>—</td>
-                  <td><div class="dt-actions"><button class="dt-action" title="Modifier">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="6">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
                 </tr>
               </tbody>
             </table>

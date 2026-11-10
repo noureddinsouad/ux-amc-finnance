@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modifier l'utilisateur</title>
+  <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+  <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
+  <link rel="stylesheet" href="../static/css/user-edit.css" th:href="@{/css/user-edit.css}">
+  <style>
+    /* Page-level layout only */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+    body { background:#f4f6f9; color:#1e293b; display:flex; min-height:100vh; }
+    .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+    .content { padding:26px 28px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; font-size:14px;
+                 color:#475569; text-decoration:none; margin-bottom:18px; }
+    .back-link:hover { color:#16a34a; }
+    .footer { text-align:center; color:#94a3b8; font-size:12px; padding:18px; margin-top:auto; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Sidebar (reusable) ===== -->
+  <div th:replace="~{fragments/sidebar :: sidebar('users')}">
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-logo">
+        <span class="logo-mark">▦</span><span class="logo-text">GridApp DSF</span>
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle>⟨</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <div class="nav-group">
+          <button type="button" class="nav-item nav-parent" data-submenu-toggle>
+            <span class="nav-icon">⚙️</span><span class="nav-label">Batch DSF</span><span class="nav-caret">▾</span>
+          </button>
+          <div class="submenu">
+            <a class="submenu-item" href="index.html">DSF ACAPS</a>
+            <a class="submenu-item" href="#">Contrôle Calcul</a>
+            <a class="submenu-item" href="#">Historique</a>
+          </div>
+        </div>
+        <a class="nav-item" href="#"><span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span></a>
+        <a class="nav-item active" href="users.html"><span class="nav-icon">👥</span><span class="nav-label">Utilisateurs</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="foot-row"><span class="nav-icon">👤</span><span class="nav-label">n.souad</span></div>
+        <div class="foot-row"><span class="nav-icon">🟢</span><span class="nav-label">Env : Production</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="main">
+
+    <!-- ===== Topbar (reusable) ===== -->
+    <div th:replace="~{fragments/topbar :: topbar('Modifier l''utilisateur','Home / Administration / Utilisateurs / Modifier',null,null,'NS')}">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" data-sidebar-open>☰</button>
+        <div>
+          <div class="topbar-crumb">Home / Administration / Utilisateurs / Modifier</div>
+          <h1>Modifier l'utilisateur</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="user-menu" data-user-menu>
+            <button type="button" class="avatar" data-user-menu-toggle
+                    aria-haspopup="true" aria-expanded="false"
+                    aria-label="Menu utilisateur">NS</button>
+            <div class="user-dropdown" role="menu" hidden>
+              <div class="user-dropdown-head">
+                <span class="user-name">n.souad</span>
+                <span class="user-role">Administrateur</span>
+              </div>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">🔑</span> Changer le mot de passe</a>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">👤</span> Mon profil</a>
+              <div class="user-dropdown-sep" role="separator"></div>
+              <form method="post" action="#">
+                <button type="submit" class="user-dropdown-item danger" role="menuitem"><span class="item-icon">⏻</span> Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="content">
+      <a class="back-link" href="users.html" th:href="@{/users}">← Retour à la liste</a>
+
+      <!-- ===== User edit form (reusable) ===== -->
+      <div th:replace="~{fragments/user-edit :: userEditForm(${user})}">
+        <div class="user-form-card">
+          <div class="user-form-head">
+            <span class="avatar">NS</span>
+            <div>
+              <h2>Noureddine Souad</h2>
+              <span class="user-id">ID : 1</span>
+            </div>
+          </div>
+          <form class="form" method="post" action="#" data-user-edit-form novalidate>
+            <div class="user-form">
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="edit-name">Nom complet <span class="req">*</span></label>
+                  <input type="text" id="edit-name" name="name" required value="Noureddine Souad">
+                  <span class="form-error">Le nom est obligatoire.</span>
+                </div>
+                <div class="form-field">
+                  <label for="edit-email">Email <span class="req">*</span></label>
+                  <input type="email" id="edit-email" name="email" required value="n.souad@amc.dz">
+                  <span class="form-error">Adresse email invalide.</span>
+                </div>
+                <div class="form-field">
+                  <label for="edit-role">Rôle <span class="req">*</span></label>
+                  <select id="edit-role" name="role" required>
+                    <option value="user">Utilisateur</option>
+                    <option value="admin" selected>Administrateur</option>
+                    <option value="auditor">Auditeur</option>
+                  </select>
+                  <span class="form-hint">L'administrateur a un accès complet à l'application.</span>
+                </div>
+                <div class="form-field">
+                  <label>Statut du compte</label>
+                  <div class="toggle-row">
+                    <button type="button" class="toggle" data-toggle-for="edit-active"
+                            role="switch" aria-checked="true" aria-label="Compte actif"></button>
+                    <input type="checkbox" id="edit-active" name="active" class="toggle-input" checked>
+                    <span class="toggle-label">Compte actif</span>
+                  </div>
+                  <span class="form-hint">Un compte inactif ne peut pas se connecter.</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary">💾 Enregistrer</button>
+              <a class="btn ghost" href="users.html">Annuler</a>
+              <button type="button" class="btn danger-outline">🔑 Réinitialiser le mot de passe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">© 2026 GridApp. All Pineapple Rights Reserved.</footer>
+  </div>
+
+  <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+  <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
+  <script src="../static/js/user-edit.js" th:src="@{/js/user-edit.js}" defer></script>
+</body>
+</html>
