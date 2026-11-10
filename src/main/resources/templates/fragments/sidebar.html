@@ -59,6 +59,11 @@
       <span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span>
     </a>
 
+    <a class="nav-item" href="../users.html" th:href="@{/users}"
+       th:classappend="${active == 'users'} ? 'active'" data-tooltip="Utilisateurs">
+      <span class="nav-icon">👥</span><span class="nav-label">Utilisateurs</span>
+    </a>
+
     <a class="nav-item" href="#" th:href="@{/change-password}"
        th:classappend="${active == 'pwd'} ? 'active'" data-tooltip="Change Pwd">
       <span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span>
