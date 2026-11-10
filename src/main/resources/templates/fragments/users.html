@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Users table fragment</title>
+  <link rel="stylesheet" href="../../static/css/users.css" th:href="@{/css/users.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     User management table fragment.
+     Usage (users supplied by the controller):
+       <div th:replace="~{fragments/users :: usersTable(${users})}"></div>
+
+     users: list of objects with
+       { id, name, email, initials, role, active, lastLogin }
+       role: 'admin' | 'user' | 'auditor'
+       lastLogin: 'dd/mm/yyyy' (sortable) or null
+     Requires: /css/users.css and /js/users.js (search, sort, pagination)
+     ============================================================ -->
+<div class="data-table-card" data-users-table th:fragment="usersTable(users)">
+
+  <div class="data-table-head">
+    <h2>Gestion des utilisateurs</h2>
+    <span class="data-table-count"
+          th:text="${#lists.size(users)} + ' utilisateurs'">6 utilisateurs</span>
+    <div class="spacer"></div>
+    <div class="dt-search">🔎 <input type="text" data-table-search
+           placeholder="Rechercher (nom, email, rôle)…"></div>
+    <a class="dt-btn primary" href="#" th:href="@{/users/new}">＋ Nouvel utilisateur</a>
+  </div>
+
+  <div class="data-table-scroll">
+    <table class="data-table" data-page-size="8">
+      <thead>
+        <tr>
+          <th>Utilisateur</th>
+          <th>Rôle</th>
+          <th>Statut</th>
+          <th data-type="date">Dernière connexion</th>
+          <th data-no-sort style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="u : ${users}" th:object="${u}">
+          <td>
+            <div class="dt-user">
+              <span class="avatar" th:text="*{initials}">NS</span>
+              <div>
+                <div class="dt-user-name" th:text="*{name}">Noureddine Souad</div>
+                <div class="dt-user-mail" th:text="*{email}">n.souad@amc.dz</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="role-badge" th:classappend="|role-*{role}|"
+                  th:text="*{role == 'admin'}   ? 'Administrateur' :
+                          (*{role == 'auditor'} ? 'Auditeur' : 'Utilisateur')">Administrateur</span>
+          </td>
+          <td>
+            <span class="status-badge"
+                  th:classappend="*{active} ? 'status-active' : 'status-inactive'"
+                  th:text="*{active} ? '● Actif' : '○ Inactif'">● Actif</span>
+          </td>
+          <td th:text="*{lastLogin} ?: '—'">09/11/2026</td>
+          <td>
+            <div class="dt-actions">
+              <a class="dt-action" title="Modifier"
+                 th:href="@{/users/edit/{id}(id=*{id})}"
+                 th:attr="data-user-id=*{id}"
+                 style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none">✏️</a>
+              <button type="button" class="dt-action" title="Réinitialiser le mot de passe"
+                      th:attr="data-user-id=*{id}">🔑</button>
+              <button type="button" class="dt-action danger" title="Supprimer"
+                      th:attr="data-user-id=*{id}">🗑</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="dt-empty">Aucun utilisateur ne correspond à la recherche.</div>
+  </div>
+
+  <div class="data-table-foot">
+    <span data-page-info>1–6 sur 6 utilisateurs</span>
+    <div class="spacer"></div>
+    <div data-pagination></div>
+  </div>
+</div>
+
+<script src="../../static/js/users.js" th:src="@{/js/users.js}" defer></script>
+</body>
+</html>

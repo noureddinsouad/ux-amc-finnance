@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestion des utilisateurs</title>
+  <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+  <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
+  <link rel="stylesheet" href="../static/css/kpi.css" th:href="@{/css/kpi.css}">
+  <link rel="stylesheet" href="../static/css/users.css" th:href="@{/css/users.css}">
+  <style>
+    /* Page-level layout only */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+    body { background:#f4f6f9; color:#1e293b; display:flex; min-height:100vh; }
+    .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+    .content { padding:26px 28px; display:flex; flex-direction:column; gap:24px; }
+    .footer { text-align:center; color:#94a3b8; font-size:12px; padding:18px; margin-top:auto; }
+  </style>
+</head>
+<body data-demo>
+
+  <!-- ===== Sidebar (reusable) ===== -->
+  <div th:replace="~{fragments/sidebar :: sidebar('users')}">
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-logo">
+        <span class="logo-mark">▦</span><span class="logo-text">GridApp DSF</span>
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle>⟨</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <div class="nav-group">
+          <button type="button" class="nav-item nav-parent" data-submenu-toggle>
+            <span class="nav-icon">⚙️</span><span class="nav-label">Batch DSF</span><span class="nav-caret">▾</span>
+          </button>
+          <div class="submenu">
+            <a class="submenu-item" href="index.html">DSF ACAPS</a>
+            <a class="submenu-item" href="#">Contrôle Calcul</a>
+            <a class="submenu-item" href="#">Historique</a>
+          </div>
+        </div>
+        <a class="nav-item" href="#"><span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span></a>
+        <a class="nav-item active" href="users.html"><span class="nav-icon">👥</span><span class="nav-label">Utilisateurs</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="foot-row"><span class="nav-icon">👤</span><span class="nav-label">n.souad</span></div>
+        <div class="foot-row"><span class="nav-icon">🟢</span><span class="nav-label">Env : Production</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="main">
+
+    <!-- ===== Topbar (reusable) ===== -->
+    <div th:replace="~{fragments/topbar :: topbar('Gestion des utilisateurs','Home / Administration / Utilisateurs',null,null,'NS')}">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" data-sidebar-open>☰</button>
+        <div>
+          <div class="topbar-crumb">Home / Administration / Utilisateurs</div>
+          <h1>Gestion des utilisateurs</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="user-menu" data-user-menu>
+            <button type="button" class="avatar" data-user-menu-toggle
+                    aria-haspopup="true" aria-expanded="false"
+                    aria-label="Menu utilisateur">NS</button>
+            <div class="user-dropdown" role="menu" hidden>
+              <div class="user-dropdown-head">
+                <span class="user-name">n.souad</span>
+                <span class="user-role">Administrateur</span>
+              </div>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">🔑</span> Changer le mot de passe</a>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">👤</span> Mon profil</a>
+              <div class="user-dropdown-sep" role="separator"></div>
+              <form method="post" action="#">
+                <button type="submit" class="user-dropdown-item danger" role="menuitem"><span class="item-icon">⏻</span> Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== KPI cards (reusable) ===== -->
+      <div class="kpi-grid">
+        <div th:replace="~{fragments/kpis :: kpiCard('Utilisateurs','12','+2 ce mois','ok')}">
+          <div class="kpi"><div class="kpi-label">Utilisateurs</div><div class="kpi-value">12</div><div class="kpi-delta ok">+2 ce mois</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('Actifs','10','▲ 83% du total','ok')}">
+          <div class="kpi"><div class="kpi-label">Actifs</div><div class="kpi-value">10</div><div class="kpi-delta ok">▲ 83% du total</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('Administrateurs','3','Accès complet','warn')}">
+          <div class="kpi"><div class="kpi-label">Administrateurs</div><div class="kpi-value">3</div><div class="kpi-delta warn">Accès complet</div></div>
+        </div>
+        <div th:replace="~{fragments/kpis :: kpiCard('Inactifs','2','À revoir','error')}">
+          <div class="kpi"><div class="kpi-label">Inactifs</div><div class="kpi-value">2</div><div class="kpi-delta error">À revoir</div></div>
+        </div>
+      </div>
+
+      <!-- ===== Users table (reusable) ===== -->
+      <div th:replace="~{fragments/users :: usersTable(${users})}">
+        <div class="data-table-card" data-users-table>
+          <div class="data-table-head">
+            <h2>Gestion des utilisateurs</h2>
+            <span class="data-table-count">6 utilisateurs</span>
+            <div class="spacer"></div>
+            <div class="dt-search">🔎 <input type="text" data-table-search placeholder="Rechercher (nom, email, rôle)…"></div>
+            <a class="dt-btn primary" href="#">＋ Nouvel utilisateur</a>
+          </div>
+          <div class="data-table-scroll">
+            <table class="data-table" data-page-size="8">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Rôle</th>
+                  <th>Statut</th>
+                  <th data-type="date">Dernière connexion</th>
+                  <th data-no-sort style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">NS</span><div><div class="dt-user-name">Noureddine Souad</div><div class="dt-user-mail">n.souad@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-admin">Administrateur</span></td>
+                  <td><span class="status-badge status-active">● Actif</span></td>
+                  <td>09/11/2026</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="1">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">AB</span><div><div class="dt-user-name">Amina Benali</div><div class="dt-user-mail">a.benali@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-user">Utilisateur</span></td>
+                  <td><span class="status-badge status-active">● Actif</span></td>
+                  <td>08/11/2026</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="2">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">KM</span><div><div class="dt-user-name">Karim Meziane</div><div class="dt-user-mail">k.meziane@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-auditor">Auditeur</span></td>
+                  <td><span class="status-badge status-active">● Actif</span></td>
+                  <td>05/11/2026</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="3">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">LB</span><div><div class="dt-user-name">Lina Boudiaf</div><div class="dt-user-mail">l.boudiaf@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-user">Utilisateur</span></td>
+                  <td><span class="status-badge status-inactive">○ Inactif</span></td>
+                  <td>12/10/2026</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="4">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">YD</span><div><div class="dt-user-name">Yacine Djellal</div><div class="dt-user-mail">y.djellal@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-admin">Administrateur</span></td>
+                  <td><span class="status-badge status-active">● Actif</span></td>
+                  <td>09/11/2026</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="5">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+                <tr>
+                  <td><div class="dt-user"><span class="avatar">SH</span><div><div class="dt-user-name">Sara Haddad</div><div class="dt-user-mail">s.haddad@amc.dz</div></div></div></td>
+                  <td><span class="role-badge role-user">Utilisateur</span></td>
+                  <td><span class="status-badge status-inactive">○ Inactif</span></td>
+                  <td>—</td>
+                  <td><div class="dt-actions"><button class="dt-action" title="Modifier" data-user-id="6">✏️</button><button class="dt-action" title="Réinitialiser le mot de passe">🔑</button><button class="dt-action danger" title="Supprimer">🗑</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="dt-empty">Aucun utilisateur ne correspond à la recherche.</div>
+          </div>
+          <div class="data-table-foot">
+            <span data-page-info>1–6 sur 6 utilisateurs</span>
+            <div class="spacer"></div>
+            <div data-pagination></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">© 2026 GridApp. All Pineapple Rights Reserved.</footer>
+  </div>
+
+  <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+  <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
+  <script src="../static/js/users.js" th:src="@{/js/users.js}" defer></script>
+</body>
+</html>

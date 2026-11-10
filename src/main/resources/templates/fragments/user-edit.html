@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User edit form fragment</title>
+  <link rel="stylesheet" href="../../static/css/user-edit.css" th:href="@{/css/user-edit.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     User edit form fragment.
+     Usage (user supplied by the controller):
+       <div th:replace="~{fragments/user-edit :: userEditForm(${user})}"></div>
+
+     user: { id, name, email, role, active }
+       role: 'admin' | 'user' | 'auditor'
+     Submits POST to /users/edit/{id} (name/email/role/active fields).
+     Requires: /css/user-edit.css and /js/user-edit.js
+     ============================================================ -->
+<div class="user-form-card" th:fragment="userEditForm(user)" th:object="${user}">
+
+  <div class="user-form-head">
+    <span class="avatar"
+          th:text="${#strings.substring(*{name},0,1) + #strings.substringAfter(*{name},' ').substring(0,1)}">NS</span>
+    <div>
+      <h2 th:text="*{name}">Noureddine Souad</h2>
+      <span class="user-id" th:text="|ID : *{id}|">ID : 1</span>
+    </div>
+  </div>
+
+  <form class="form" method="post" action="#" th:action="@{/users/edit/{id}(id=*{id})}"
+        data-user-edit-form novalidate>
+    <div class="user-form">
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label for="edit-name">Nom complet <span class="req">*</span></label>
+          <input type="text" id="edit-name" name="name" required
+                 th:value="*{name}" value="Noureddine Souad">
+          <span class="form-error">Le nom est obligatoire.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="edit-email">Email <span class="req">*</span></label>
+          <input type="email" id="edit-email" name="email" required
+                 th:value="*{email}" value="n.souad@amc.dz">
+          <span class="form-error">Adresse email invalide.</span>
+        </div>
+
+        <div class="form-field">
+          <label for="edit-role">Rôle <span class="req">*</span></label>
+          <select id="edit-role" name="role" required>
+            <option value="user"    th:selected="*{role == 'user'}">Utilisateur</option>
+            <option value="admin"   th:selected="*{role == 'admin'}">Administrateur</option>
+            <option value="auditor" th:selected="*{role == 'auditor'}">Auditeur</option>
+          </select>
+          <span class="form-hint">L'administrateur a un accès complet à l'application.</span>
+        </div>
+
+        <div class="form-field">
+          <label>Statut du compte</label>
+          <div class="toggle-row">
+            <button type="button" class="toggle" data-toggle-for="edit-active"
+                    role="switch" th:attr="aria-checked=*{active}"
+                    aria-label="Compte actif"></button>
+            <input type="checkbox" id="edit-active" name="active" class="toggle-input"
+                   th:checked="*{active}" checked>
+            <span class="toggle-label">Compte actif</span>
+          </div>
+          <span class="form-hint">Un compte inactif ne peut pas se connecter.</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn primary">💾 Enregistrer</button>
+      <a class="btn ghost" href="../users.html" th:href="@{/users}">Annuler</a>
+      <button type="button" class="btn danger-outline"
+              th:attr="data-reset-user=*{id}">🔑 Réinitialiser le mot de passe</button>
+    </div>
+  </form>
+</div>
+
+<script src="../../static/js/user-edit.js" th:src="@{/js/user-edit.js}" defer></script>
+</body>
+</html>

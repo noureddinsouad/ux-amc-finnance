@@ -1,0 +1,149 @@
+/* ==========================================================
+   Data table component (users page)
+   Usage: fragment dataTable(...)
+   ========================================================== */
+
+:root {
+  --dt-bg: #ffffff;
+  --dt-border: #e2e8f0;
+  --dt-hover: #f8fafc;
+  --dt-muted: #94a3b8;
+  --dt-text: #1e293b;
+  --dt-accent: #16a34a;
+}
+
+.data-table-card {
+  background: var(--dt-bg);
+  border: 1px solid var(--dt-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* ---------- Header: title + actions ---------- */
+.data-table-head {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #f1f5f9;
+}
+.data-table-head h2 { font-size: 16px; }
+.data-table-count {
+  font-size: 11px;
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.data-table-head .spacer { flex: 1; }
+
+.dt-search {
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--dt-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 14px;
+  min-width: 220px;
+}
+.dt-search input { border: none; outline: none; font-size: 14px; width: 100%; }
+
+.dt-btn {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--dt-border);
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dt-btn.primary { background: var(--dt-accent); border-color: var(--dt-accent); color: #fff; }
+.dt-btn:hover { filter: brightness(.97); }
+
+/* ---------- Table ---------- */
+.data-table-scroll { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--dt-muted);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--dt-border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.data-table th.sorted-asc::after  { content: " ▲"; font-size: 9px; }
+.data-table th.sorted-desc::after { content: " ▼"; font-size: 9px; }
+.data-table th[data-no-sort] { cursor: default; }
+
+.data-table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.data-table tbody tr:hover { background: var(--dt-hover); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr.hidden-row { display: none; }
+
+/* ---------- Cells ---------- */
+.dt-user { display: flex; align-items: center; gap: 10px; }
+.dt-user .avatar { width: 32px; height: 32px; font-size: 12px; flex-shrink: 0; }
+.dt-user-name { font-weight: 600; color: var(--dt-text); }
+.dt-user-mail { font-size: 12px; color: var(--dt-muted); }
+
+.role-badge {
+  font-size: 12px; font-weight: 600;
+  padding: 4px 10px; border-radius: 999px;
+  background: #eef2ff; color: #3730a3;
+  white-space: nowrap;
+}
+.role-badge.role-admin  { background: #ede9fe; color: #6d28d9; }
+.role-badge.role-user   { background: #eff6ff; color: #1d4ed8; }
+.role-badge.role-auditor{ background: #f0f9ff; color: #0369a1; }
+
+.status-badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.status-badge.status-active   { background: #dcfce7; color: #15803d; }
+.status-badge.status-inactive { background: #f1f5f9; color: #64748b; }
+
+.dt-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.dt-action {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--dt-border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+.dt-action:hover { background: #f1f5f9; }
+.dt-action.danger { color: #dc2626; }
+.dt-action.danger:hover { background: #fef2f2; }
+
+.dt-empty { text-align: center; color: var(--dt-muted); padding: 28px; font-size: 14px; display: none; }
+.dt-empty.visible { display: block; }
+
+/* ---------- Pagination ---------- */
+.data-table-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  font-size: 13px;
+  color: var(--dt-muted);
+}
+.data-table-foot .spacer { flex: 1; }
+.dt-page-btn {
+  min-width: 30px; height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--dt-border);
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  cursor: pointer;
+}
+.dt-page-btn.current { background: var(--dt-accent); border-color: var(--dt-accent); color: #fff; font-weight: 700; }
+.dt-page-btn:disabled { opacity: .4; cursor: default; }

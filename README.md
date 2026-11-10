@@ -11,17 +11,25 @@ src/main/resources/
 │   │   ├── sidebar.html      # sidebar(activeMenu)
 │   │   ├── topbar.html       # topbar(title, crumb, invDate, invStatus, initials)
 │   │   ├── kpis.html         # kpiCard(label, value, delta, tone)
-│   │   └── reports.html      # reportGroup(title, tag, items, progressPct, sectionLabel)
-│   └── index.html            # demo dashboard composing all fragments
+│   │   ├── reports.html      # reportGroup(title, tag, items, progressPct, sectionLabel)
+│   │   ├── users.html        # usersTable(users)
+│   │   └── user-edit.html    # userEditForm(user)
+│   ├── index.html            # demo dashboard composing all fragments
+│   ├── users.html            # user management page
+│   └── user-edit.html        # user edit page
 └── static/
     ├── css/                  # one stylesheet per component
     │   ├── sidebar.css
     │   ├── topbar.css
     │   ├── kpi.css
-    │   └── reports.css
+    │   ├── reports.css
+    │   ├── users.css
+    │   └── user-edit.css
     └── js/
         ├── sidebar.js        # sidebar interactivity (vanilla JS, no dependency)
-        └── topbar.js         # user dropdown interactivity
+        ├── topbar.js         # user dropdown interactivity
+        ├── users.js          # users table: search, sort, pagination
+        └── user-edit.js      # edit form: toggle switch, validation
 ```
 
 ## Components
@@ -75,6 +83,33 @@ Driven by `static/js/topbar.js` — include it after the sidebar script.
 `items`: list of `{ code, name, sub, state }` with `state` = `done` | `pending` | `na`.
 Renders status badge + per-report ▶ run button (`data-report-code` attribute for JS hooks).
 Pass `progressPct = null` to hide the progress bar.
+
+### Users table
+
+```html
+<div th:replace="~{fragments/users :: usersTable(${users})}"></div>
+```
+
+`users`: list of `{ id, name, email, initials, role, active, lastLogin }` with
+`role` = `admin` | `user` | `auditor`. The table is interactive out of the box:
+live search across all columns, click-to-sort headers (dates in `dd/mm/yyyy` are
+sorted chronologically), and client-side pagination (`data-page-size`, default 8).
+Row action buttons carry `data-user-id` for JS hooks (edit / reset password / delete).
+Demo page: `templates/users.html`.
+
+### User edit form
+
+The ✏️ button of each row links to `/users/edit/{id}` (Thymeleaf `@{/users/edit/{id}(id=*{id})}`).
+
+```html
+<div th:replace="~{fragments/user-edit :: userEditForm(${user})}"></div>
+```
+
+`user`: `{ id, name, email, role, active }`. The form POSTs back to
+`/users/edit/{id}` with `name`, `email`, `role`, `active` fields. Includes an
+accessible toggle switch for the account status, client-side validation
+(required + email format), Annuler → back to the list, and a reset-password
+action. Demo page: `templates/user-edit.html` (preview: `user-edit.html?id=1`).
 
 ## Theming
 
