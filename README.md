@@ -20,7 +20,8 @@ src/main/resources/
     │   ├── kpi.css
     │   └── reports.css
     └── js/
-        └── sidebar.js        # interactivity (vanilla JS, no dependency)
+        ├── sidebar.js        # sidebar interactivity (vanilla JS, no dependency)
+        └── topbar.js         # user dropdown interactivity
 ```
 
 ## Components
@@ -48,6 +49,11 @@ src/main/resources/
 
 Breadcrumb + title, inventory date pill, status pill (`OUVERT` → green, otherwise red),
 user avatar. Includes the mobile hamburger wired to the sidebar.
+
+**User dropdown**: clicking the avatar opens a menu (name/role header, "Changer le
+mot de passe", "Mon profil", and a red **Logout** posted via `@{/logout}`).
+Closes on outside click or `Esc`; keyboard accessible (`aria-expanded`, focus return).
+Driven by `static/js/topbar.js` — include it after the sidebar script.
 
 ### KPI card
 

@@ -73,7 +73,23 @@
         <div class="topbar-actions">
           <span class="pill pill-date">📅 Inventaire : 30/09/2022</span>
           <span class="pill pill-open">● OUVERT</span>
-          <div class="avatar">NS</div>
+          <div class="user-menu" data-user-menu>
+            <button type="button" class="avatar" data-user-menu-toggle
+                    aria-haspopup="true" aria-expanded="false"
+                    aria-label="Menu utilisateur">NS</button>
+            <div class="user-dropdown" role="menu" hidden>
+              <div class="user-dropdown-head">
+                <span class="user-name">n.souad</span>
+                <span class="user-role">Administrateur</span>
+              </div>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">🔑</span> Changer le mot de passe</a>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">👤</span> Mon profil</a>
+              <div class="user-dropdown-sep" role="separator"></div>
+              <form method="post" action="#">
+                <button type="submit" class="user-dropdown-item danger" role="menuitem"><span class="item-icon">⏻</span> Logout</button>
+              </form>
+            </div>
+          </div>
         </div>
       </header>
     </div>
@@ -147,5 +163,6 @@
   </div>
 
   <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+  <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
 </body>
 </html>
