@@ -12,7 +12,8 @@
 
     var table    = card.querySelector('.data-table');
     var tbody    = table.tBodies[0];
-    var rows     = Array.prototype.slice.call(tbody.rows);
+    // live list — rebuilt on each render so rows removed at runtime are dropped
+    function currentRows() { return Array.prototype.slice.call(tbody.rows); }
     var searchIn = card.querySelector('[data-table-search]');
     var emptyMsg = card.querySelector('.dt-empty');
     var info     = card.querySelector('[data-page-info]');
@@ -34,7 +35,7 @@
 
     function visibleRows() {
       var q = (searchIn.value || '').trim().toLowerCase();
-      return rows.filter(function (r) {
+      return currentRows().filter(function (r) {
         if (!q) return true;
         return r.textContent.toLowerCase().indexOf(q) !== -1;
       });
@@ -45,7 +46,7 @@
       var pages = Math.max(1, Math.ceil(vis.length / pageSize));
       if (page > pages) page = pages;
 
-      rows.forEach(function (r) { r.classList.add('hidden-row'); });
+      currentRows().forEach(function (r) { r.classList.add('hidden-row'); });
       vis.slice((page - 1) * pageSize, page * pageSize)
          .forEach(function (r) { r.classList.remove('hidden-row'); });
 
@@ -87,12 +88,13 @@
           c.classList.remove('sorted-asc', 'sorted-desc');
         });
         th.classList.add(sortAsc ? 'sorted-asc' : 'sorted-desc');
-        rows.sort(function (a, b) {
+        var sorted = currentRows();
+        sorted.sort(function (a, b) {
           var x = text(a, col), y = text(b, col);
           if (isDate) { x = parseDate(x); y = parseDate(y); }
           return (x < y ? -1 : x > y ? 1 : 0) * (sortAsc ? 1 : -1);
         });
-        rows.forEach(function (r) { tbody.appendChild(r); });
+        sorted.forEach(function (r) { tbody.appendChild(r); });
         page = 1;
         render();
       });

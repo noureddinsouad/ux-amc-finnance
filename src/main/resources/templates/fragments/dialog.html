@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm dialog fragment</title>
+  <link rel="stylesheet" href="../../static/css/dialog.css" th:href="@{/css/dialog.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Reusable confirmation dialog fragment.
+     Usage:
+       <div th:replace="~{fragments/dialog :: confirmDialog(
+           'Supprimer l''utilisateur',
+           'Cette action est irréversible.',
+           'Supprimer', @{/users/delete})}"></div>
+
+     Trigger it from any button carrying:
+       data-confirm-open            — opens the dialog
+       data-confirm-id="123"        — appended to the form action (actionBase/{id})
+       data-confirm-name="X"        — injected into [data-confirm-name-slot]
+
+     The form POSTs to actionBase/{id}. Cancel, scrim click or Esc closes.
+     Requires: /css/dialog.css and /js/dialog.js
+     ============================================================ -->
+<div class="dialog-scrim" data-confirm-dialog hidden
+     th:fragment="confirmDialog(title, message, confirmLabel, actionBase)">
+
+  <div class="dialog" role="alertdialog" aria-modal="true"
+       aria-labelledby="confirm-title" aria-describedby="confirm-message">
+
+    <div class="dialog-icon">⚠️</div>
+
+    <div class="dialog-title" id="confirm-title"
+         th:text="${title}">Supprimer l'utilisateur</div>
+
+    <div class="dialog-message" id="confirm-message">
+      <span data-confirm-message-text th:text="${message}">Cette action est irréversible.</span>
+      <strong data-confirm-name-slot></strong>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-ghost" data-confirm-cancel>Annuler</button>
+      <form method="post" action="#" th:attr="data-action-base=${actionBase}">
+        <button type="submit" class="btn btn-danger"
+                th:text="${confirmLabel}">Supprimer</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../../static/js/dialog.js" th:src="@{/js/dialog.js}" defer></script>
+</body>
+</html>

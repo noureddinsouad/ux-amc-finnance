@@ -72,7 +72,8 @@
               <button type="button" class="dt-action" title="Réinitialiser le mot de passe"
                       th:attr="data-user-id=*{id}">🔑</button>
               <button type="button" class="dt-action danger" title="Supprimer"
-                      th:attr="data-user-id=*{id}">🗑</button>
+                      data-confirm-open
+                      th:attr="data-confirm-id=*{id},data-confirm-name=*{name}">🗑</button>
             </div>
           </td>
         </tr>

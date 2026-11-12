@@ -13,7 +13,8 @@ src/main/resources/
 │   │   ├── kpis.html         # kpiCard(label, value, delta, tone)
 │   │   ├── reports.html      # reportGroup(title, tag, items, progressPct, sectionLabel)
 │   │   ├── users.html        # usersTable(users)
-│   │   └── user-edit.html    # userEditForm(user)
+│   │   ├── user-edit.html    # userEditForm(user)
+│   │   └── dialog.html       # confirmDialog(title, message, confirmLabel, actionBase)
 │   ├── index.html            # demo dashboard composing all fragments
 │   ├── users.html            # user management page
 │   └── user-edit.html        # user edit page
@@ -24,12 +25,14 @@ src/main/resources/
     │   ├── kpi.css
     │   ├── reports.css
     │   ├── users.css
-    │   └── user-edit.css
+    │   ├── user-edit.css
+    │   └── dialog.css
     └── js/
         ├── sidebar.js        # sidebar interactivity (vanilla JS, no dependency)
         ├── topbar.js         # user dropdown interactivity
         ├── users.js          # users table: search, sort, pagination
-        └── user-edit.js      # edit form: toggle switch, validation
+        ├── user-edit.js      # edit form: toggle switch, validation
+        └── dialog.js         # confirm dialog open/close + dynamic form action
 ```
 
 ## Components
@@ -96,6 +99,24 @@ live search across all columns, click-to-sort headers (dates in `dd/mm/yyyy` are
 sorted chronologically), and client-side pagination (`data-page-size`, default 8).
 Row action buttons carry `data-user-id` for JS hooks (edit / reset password / delete).
 Demo page: `templates/users.html`.
+
+### Confirm dialog
+
+Generic confirmation modal, used by the users table for **Supprimer**:
+
+```html
+<div th:replace="~{fragments/dialog :: confirmDialog(
+    'Supprimer l''utilisateur', 'Cette action est irréversible.', 'Supprimer', @{/users/delete})}"></div>
+```
+
+Trigger it from any button:
+
+```html
+<button data-confirm-open th:attr="data-confirm-id=*{id},data-confirm-name=*{name}">🗑</button>
+```
+
+On confirm the dialog's form POSTs to `actionBase/{id}`. Closes via Annuler,
+scrim click or `Esc` (focus returns to the trigger).
 
 ### User edit form
 
