@@ -14,7 +14,8 @@ src/main/resources/
 │   │   ├── reports.html      # reportGroup(title, tag, items, progressPct, sectionLabel)
 │   │   ├── users.html        # usersTable(users)
 │   │   ├── user-edit.html    # userEditForm(user)
-│   │   └── dialog.html       # confirmDialog(title, message, confirmLabel, actionBase)
+│   │   ├── dialog.html       # confirmDialog(title, message, confirmLabel, actionBase)
+│   │   └── alerts.html       # alerts() — success / error / error list
 │   ├── index.html            # demo dashboard composing all fragments
 │   ├── users.html            # user management page
 │   └── user-edit.html        # user edit page
@@ -26,13 +27,15 @@ src/main/resources/
     │   ├── reports.css
     │   ├── users.css
     │   ├── user-edit.css
-    │   └── dialog.css
+    │   ├── dialog.css
+    │   └── alerts.css
     └── js/
         ├── sidebar.js        # sidebar interactivity (vanilla JS, no dependency)
         ├── topbar.js         # user dropdown interactivity
         ├── users.js          # users table: search, sort, pagination
         ├── user-edit.js      # edit form: toggle switch, validation
-        └── dialog.js         # confirm dialog open/close + dynamic form action
+        ├── dialog.js         # confirm dialog open/close + dynamic form action
+        └── alerts.js         # alert dismiss + success auto-dismiss
 ```
 
 ## Components
@@ -131,6 +134,30 @@ The ✏️ button of each row links to `/users/edit/{id}` (Thymeleaf `@{/users/e
 accessible toggle switch for the account status, client-side validation
 (required + email format), Annuler → back to the list, and a reset-password
 action. Demo page: `templates/user-edit.html` (preview: `user-edit.html?id=1`).
+
+### Alerts (flash messages)
+
+Place once near the top of `.content` on any page:
+
+```html
+<div th:replace="~{fragments/alerts :: alerts}"></div>
+```
+
+The fragment renders **nothing** unless the controller sends one of these model
+attributes:
+
+| Attribute | Type | Rendered as |
+|---|---|---|
+| `successMessage` | `String` | green banner (auto-dismisses after 6 s) |
+| `errorMessage` | `String` | red banner (stays until closed) |
+| `errorMessages` | `List<String>` | red banner with a bullet list |
+
+```java
+redirectAttrs.addFlashAttribute("successMessage", "Utilisateur mis à jour.");
+model.addAttribute("errorMessages", List.of("Email déjà utilisé.", "Rôle invalide."));
+```
+
+All alerts are dismissible via ✕; accessible roles (`status` / `alert`) included.
 
 ## Theming
 

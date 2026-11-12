@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Alerts fragment</title>
+  <link rel="stylesheet" href="../../static/css/alerts.css" th:href="@{/css/alerts.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Reusable alerts fragment — renders nothing when there is no message.
+
+     Usage (near the top of .content, after the topbar):
+       <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+     Controller model attributes:
+       successMessage : String        → green banner
+       errorMessage   : String        → red banner
+       errorMessages  : List<String>  → red banner with bullet list
+
+     Example (Spring controller, after an action):
+       redirectAttrs.addFlashAttribute("successMessage", "Utilisateur mis à jour.");
+       // or
+       model.addAttribute("errorMessage", "Suppression impossible.");
+       model.addAttribute("errorMessages", List.of("Email déjà utilisé.", "Rôle invalide."));
+
+     Behavior: close button dismisses; success auto-dismisses after 6s.
+     Requires: /css/alerts.css and /js/alerts.js
+     ============================================================ -->
+<div class="alerts-stack" th:fragment="alerts"
+     th:if="${successMessage != null or errorMessage != null or not #lists.isEmpty(errorMessages)}">
+
+  <div class="alert alert-success" role="status" data-alert="success"
+       th:if="${successMessage != null}">
+    <span class="alert-icon">✔</span>
+    <div class="alert-body" th:text="${successMessage}">Opération réussie.</div>
+    <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+  </div>
+
+  <div class="alert alert-error" role="alert" data-alert="error"
+       th:if="${errorMessage != null}">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-body">
+      <div class="alert-title">Erreur</div>
+      <div th:text="${errorMessage}">Une erreur est survenue.</div>
+    </div>
+    <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+  </div>
+
+  <div class="alert alert-error" role="alert" data-alert="error"
+       th:if="${not #lists.isEmpty(errorMessages)}">
+    <span class="alert-icon">⚠️</span>
+    <div class="alert-body">
+      <div class="alert-title" th:text="|${#lists.size(errorMessages)} erreur(s) détectée(s)|">2 erreur(s) détectée(s)</div>
+      <ul>
+        <li th:each="err : ${errorMessages}" th:text="${err}">Email déjà utilisé.</li>
+      </ul>
+    </div>
+    <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+  </div>
+
+</div>
+
+<script src="../../static/js/alerts.js" th:src="@{/js/alerts.js}" defer></script>
+</body>
+</html>
