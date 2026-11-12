@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
   <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
   <link rel="stylesheet" href="../static/css/user-edit.css" th:href="@{/css/user-edit.css}">
+  <link rel="stylesheet" href="../static/css/alerts.css" th:href="@{/css/alerts.css}">
   <style>
     /* Page-level layout only */
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
@@ -84,8 +85,22 @@
       </header>
     </div>
 
-    <div class="content">
-      <a class="back-link" href="users.html" th:href="@{/users}">← Retour à la liste</a>
+    <div class="content" style="display:flex;flex-direction:column;gap:18px">
+      <a class="back-link" href="users.html" th:href="@{/users}" style="margin-bottom:0">← Retour à la liste</a>
+
+      <!-- ===== Flash messages (reusable) ===== -->
+      <div th:replace="~{fragments/alerts :: alerts}">
+        <div class="alerts-stack">
+          <div class="alert alert-error" role="alert" data-alert="error">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-body">
+              <div class="alert-title">Erreur</div>
+              <div>Impossible d'enregistrer : l'adresse email est déjà utilisée.</div>
+            </div>
+            <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+          </div>
+        </div>
+      </div>
 
       <!-- ===== User edit form (reusable) ===== -->
       <div th:replace="~{fragments/user-edit :: userEditForm(${user})}">
@@ -147,5 +162,6 @@
   <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
   <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
   <script src="../static/js/user-edit.js" th:src="@{/js/user-edit.js}" defer></script>
+  <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}" defer></script>
 </body>
 </html>

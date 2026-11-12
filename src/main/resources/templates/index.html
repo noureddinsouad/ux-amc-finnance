@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
   <link rel="stylesheet" href="../static/css/kpi.css" th:href="@{/css/kpi.css}">
   <link rel="stylesheet" href="../static/css/reports.css" th:href="@{/css/reports.css}">
+  <link rel="stylesheet" href="../static/css/alerts.css" th:href="@{/css/alerts.css}">
   <style>
     /* Page-level layout only — components live in their own CSS files */
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
@@ -95,7 +96,18 @@
       </header>
     </div>
 
-    <div class="content">
+    <div class="content" style="display:flex;flex-direction:column;gap:20px">
+
+      <!-- ===== Flash messages (reusable) ===== -->
+      <div th:replace="~{fragments/alerts :: alerts}">
+        <div class="alerts-stack">
+          <div class="alert alert-success" role="status" data-alert="success">
+            <span class="alert-icon">✔</span>
+            <div class="alert-body">Lot DSF généré avec succès pour l'inventaire du 30/09/2022.</div>
+            <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Toolbar: page-specific -->
       <div class="toolbar">
@@ -165,5 +177,6 @@
 
   <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
   <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
+  <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}" defer></script>
 </body>
 </html>
