@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listing Rapprochement</title>
+  <link rel="stylesheet" href="../static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+  <link rel="stylesheet" href="../static/css/topbar.css" th:href="@{/css/topbar.css}">
+  <link rel="stylesheet" href="../static/css/users.css" th:href="@{/css/users.css}">
+  <link rel="stylesheet" href="../static/css/rapprochement.css" th:href="@{/css/rapprochement.css}">
+  <link rel="stylesheet" href="../static/css/alerts.css" th:href="@{/css/alerts.css}">
+  <style>
+    /* Page-level layout only */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
+    body { background:#f4f6f9; color:#1e293b; display:flex; min-height:100vh; }
+    .main { flex:1; display:flex; flex-direction:column; min-width:0; }
+    .content { padding:26px 28px; display:flex; flex-direction:column; gap:20px; }
+    .footer { text-align:center; color:#94a3b8; font-size:12px; padding:18px; margin-top:auto; }
+  </style>
+</head>
+<body data-demo>
+
+  <!-- ===== Sidebar (reusable) ===== -->
+  <div th:replace="~{fragments/sidebar :: sidebar('rapprochement')}">
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-logo">
+        <span class="logo-mark">▦</span><span class="logo-text">GridApp DSF</span>
+        <button type="button" class="sidebar-toggle" data-sidebar-toggle>⟨</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="index.html"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></a>
+        <div class="nav-group">
+          <button type="button" class="nav-item nav-parent" data-submenu-toggle>
+            <span class="nav-icon">⚙️</span><span class="nav-label">Batch DSF</span><span class="nav-caret">▾</span>
+          </button>
+          <div class="submenu">
+            <a class="submenu-item" href="index.html">DSF ACAPS</a>
+            <a class="submenu-item" href="#">Contrôle Calcul</a>
+            <a class="submenu-item" href="#">Historique</a>
+          </div>
+        </div>
+        <a class="nav-item" href="#"><span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span></a>
+        <a class="nav-item active" href="rapprochement.html"><span class="nav-icon">🔄</span><span class="nav-label">Rapprochement</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span></a>
+        <a class="nav-item" href="users.html"><span class="nav-icon">👥</span><span class="nav-label">Utilisateurs</span></a>
+        <a class="nav-item" href="#"><span class="nav-icon">🔑</span><span class="nav-label">Change Pwd</span></a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="foot-row"><span class="nav-icon">👤</span><span class="nav-label">n.souad</span></div>
+        <div class="foot-row"><span class="nav-icon">🟢</span><span class="nav-label">Env : Production</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="main">
+
+    <!-- ===== Topbar (reusable) ===== -->
+    <div th:replace="~{fragments/topbar :: topbar('Listing Rapprochement','Home / Comptabilité / Rapprochement',null,null,'NS')}">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" data-sidebar-open>☰</button>
+        <div>
+          <div class="topbar-crumb">Home / Comptabilité / Rapprochement</div>
+          <h1>Listing Rapprochement</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="user-menu" data-user-menu>
+            <button type="button" class="avatar" data-user-menu-toggle
+                    aria-haspopup="true" aria-expanded="false"
+                    aria-label="Menu utilisateur">NS</button>
+            <div class="user-dropdown" role="menu" hidden>
+              <div class="user-dropdown-head">
+                <span class="user-name">n.souad</span>
+                <span class="user-role">Administrateur</span>
+              </div>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">🔑</span> Changer le mot de passe</a>
+              <a class="user-dropdown-item" role="menuitem" href="#"><span class="item-icon">👤</span> Mon profil</a>
+              <div class="user-dropdown-sep" role="separator"></div>
+              <form method="post" action="#">
+                <button type="submit" class="user-dropdown-item danger" role="menuitem"><span class="item-icon">⏻</span> Logout</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== Flash messages (reusable) ===== -->
+      <div th:replace="~{fragments/alerts :: alerts}"></div>
+
+      <!-- ===== Listing Rapprochement (reusable) ===== -->
+      <div th:replace="~{fragments/rapprochement :: rapprochementTable(${pageData})}">
+        <form method="post" action="#" data-rapprochement>
+          <div class="rap-action-bar">
+            <button type="submit" class="rap-btn" data-generate-btn disabled>
+              ⚙️ Générer écritures compt. de régul
+            </button>
+            <span class="rap-selected-count" data-selected-count>0 élément sélectionné</span>
+          </div>
+          <div class="data-table-card">
+            <div class="data-table-head">
+              <h2>Listing Rapprochement</h2>
+              <span class="data-table-count">23 éléments</span>
+            </div>
+            <div class="data-table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Référence</th>
+                    <th>Date écriture</th>
+                    <th>Libellé</th>
+                    <th>Compte</th>
+                    <th style="text-align:right">Montant</th>
+                    <th>Statut</th>
+                    <th class="rap-check-col"><input type="checkbox" data-select-all aria-label="Tout sélectionner"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>RAP-0101</td><td>10/11/2026</td><td>Régul. sinistres AUTO</td><td>345100</td><td class="rap-amount">12 450,00 €</td><td><span class="status-badge status-todo">À rapprocher</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="101" data-row-check aria-label="Sélectionner RAP-0101"></td></tr>
+                  <tr><td>RAP-0102</td><td>10/11/2026</td><td>Écart encaissement DOM</td><td>511000</td><td class="rap-amount rap-amount-neg">-850,30 €</td><td><span class="status-badge status-gap">Écart</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="102" data-row-check aria-label="Sélectionner RAP-0102"></td></tr>
+                  <tr><td>RAP-0103</td><td>11/11/2026</td><td>Rapprochement commissions</td><td>467200</td><td class="rap-amount">3 980,00 €</td><td><span class="status-badge status-done">Rapproché</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="103" data-row-check aria-label="Sélectionner RAP-0103"></td></tr>
+                  <tr><td>RAP-0104</td><td>11/11/2026</td><td>Régul. primes accessoires</td><td>345200</td><td class="rap-amount">1 240,75 €</td><td><span class="status-badge status-todo">À rapprocher</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="104" data-row-check aria-label="Sélectionner RAP-0104"></td></tr>
+                  <tr><td>RAP-0105</td><td>12/11/2026</td><td>Écart règlement intermédiaire</td><td>511100</td><td class="rap-amount rap-amount-neg">-320,00 €</td><td><span class="status-badge status-gap">Écart</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="105" data-row-check aria-label="Sélectionner RAP-0105"></td></tr>
+                  <tr><td>RAP-0106</td><td>12/11/2026</td><td>Rapprochement coassurance</td><td>345300</td><td class="rap-amount">8 715,40 €</td><td><span class="status-badge status-done">Rapproché</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="106" data-row-check aria-label="Sélectionner RAP-0106"></td></tr>
+                  <tr><td>RAP-0107</td><td>12/11/2026</td><td>Régul. frais de gestion</td><td>467500</td><td class="rap-amount">640,00 €</td><td><span class="status-badge status-todo">À rapprocher</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="107" data-row-check aria-label="Sélectionner RAP-0107"></td></tr>
+                  <tr><td>RAP-0108</td><td>13/11/2026</td><td>Écart sinistres CORP</td><td>511200</td><td class="rap-amount rap-amount-neg">-1 150,00 €</td><td><span class="status-badge status-gap">Écart</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="108" data-row-check aria-label="Sélectionner RAP-0108"></td></tr>
+                  <tr><td>RAP-0109</td><td>13/11/2026</td><td>Rapprochement réassurance</td><td>345400</td><td class="rap-amount">22 300,00 €</td><td><span class="status-badge status-done">Rapproché</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="109" data-row-check aria-label="Sélectionner RAP-0109"></td></tr>
+                  <tr><td>RAP-0110</td><td>13/11/2026</td><td>Régul. taxes assurance</td><td>467800</td><td class="rap-amount">512,90 €</td><td><span class="status-badge status-todo">À rapprocher</span></td><td class="rap-check-col"><input type="checkbox" name="selectedIds" value="110" data-row-check aria-label="Sélectionner RAP-0110"></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="data-table-foot">
+              <span data-page-info>Page 1 sur 3 — 23 éléments</span>
+              <div class="spacer"></div>
+              <div class="rap-pagination">
+                <a href="#" class="disabled" data-page-link="-1" aria-label="Page précédente">‹</a>
+                <a href="#" class="current" data-page-link="0" data-page-num>1</a>
+                <a href="#" data-page-link="1" data-page-num>2</a>
+                <a href="#" data-page-link="2" data-page-num>3</a>
+                <a href="#" data-page-link="1" aria-label="Page suivante">›</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer">© 2026 GridApp. All Pineapple Rights Reserved.</footer>
+  </div>
+
+  <!-- Demo dataset: in the real app rows come from the controller (Page<Item>) -->
+  <script>
+    window.RAPPROCHEMENT_DEMO_DATA = [
+      {id:101,ref:'RAP-0101',date:'10/11/2026',lib:'Régul. sinistres AUTO',compte:'345100',montant:'12 450,00 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:102,ref:'RAP-0102',date:'10/11/2026',lib:'Écart encaissement DOM',compte:'511000',montant:'-850,30 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:103,ref:'RAP-0103',date:'11/11/2026',lib:'Rapprochement commissions',compte:'467200',montant:'3 980,00 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:104,ref:'RAP-0104',date:'11/11/2026',lib:'Régul. primes accessoires',compte:'345200',montant:'1 240,75 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:105,ref:'RAP-0105',date:'12/11/2026',lib:'Écart règlement intermédiaire',compte:'511100',montant:'-320,00 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:106,ref:'RAP-0106',date:'12/11/2026',lib:'Rapprochement coassurance',compte:'345300',montant:'8 715,40 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:107,ref:'RAP-0107',date:'12/11/2026',lib:'Régul. frais de gestion',compte:'467500',montant:'640,00 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:108,ref:'RAP-0108',date:'13/11/2026',lib:'Écart sinistres CORP',compte:'511200',montant:'-1 150,00 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:109,ref:'RAP-0109',date:'13/11/2026',lib:'Rapprochement réassurance',compte:'345400',montant:'22 300,00 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:110,ref:'RAP-0110',date:'13/11/2026',lib:'Régul. taxes assurance',compte:'467800',montant:'512,90 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:111,ref:'RAP-0111',date:'14/11/2026',lib:'Écart encaissement AUTO',compte:'511000',montant:'-75,50 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:112,ref:'RAP-0112',date:'14/11/2026',lib:'Rapprochement courtage',compte:'467200',montant:'6 120,00 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:113,ref:'RAP-0113',date:'14/11/2026',lib:'Régul. sinistres MRH',compte:'345100',montant:'4 330,10 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:114,ref:'RAP-0114',date:'15/11/2026',lib:'Rapprochement apporteurs',compte:'467300',montant:'1 980,00 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:115,ref:'RAP-0115',date:'15/11/2026',lib:'Écart règlement CORP',compte:'511200',montant:'-2 410,00 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:116,ref:'RAP-0116',date:'15/11/2026',lib:'Régul. primes flotte',compte:'345200',montant:'9 760,25 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:117,ref:'RAP-0117',date:'16/11/2026',lib:'Rapprochement réass. cédée',compte:'345400',montant:'15 040,00 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:118,ref:'RAP-0118',date:'16/11/2026',lib:'Écart taxes DOM-TOM',compte:'511300',montant:'-190,60 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:119,ref:'RAP-0119',date:'16/11/2026',lib:'Régul. frais dossier',compte:'467500',montant:'320,00 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:120,ref:'RAP-0120',date:'16/11/2026',lib:'Rapprochement coass. sortante',compte:'345300',montant:'7 505,80 €',neg:false,status:'Rapproché',statusClass:'status-done'},
+      {id:121,ref:'RAP-0121',date:'16/11/2026',lib:'Écart sinistres AUTO',compte:'511100',montant:'-640,00 €',neg:true,status:'Écart',statusClass:'status-gap'},
+      {id:122,ref:'RAP-0122',date:'16/11/2026',lib:'Régul. commissions DOM',compte:'467200',montant:'2 150,00 €',neg:false,status:'À rapprocher',statusClass:'status-todo'},
+      {id:123,ref:'RAP-0123',date:'16/11/2026',lib:'Rapprochement final T4',compte:'467900',montant:'11 890,00 €',neg:false,status:'Rapproché',statusClass:'status-done'}
+    ];
+  </script>
+  <script src="../static/js/sidebar.js" th:src="@{/js/sidebar.js}" defer></script>
+  <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
+  <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}" defer></script>
+  <script src="../static/js/rapprochement.js" th:src="@{/js/rapprochement.js}" defer></script>
+</body>
+</html>
