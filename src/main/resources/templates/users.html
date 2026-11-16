@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../static/css/kpi.css" th:href="@{/css/kpi.css}">
   <link rel="stylesheet" href="../static/css/users.css" th:href="@{/css/users.css}">
   <link rel="stylesheet" href="../static/css/dialog.css" th:href="@{/css/dialog.css}">
+  <link rel="stylesheet" href="../static/css/alerts.css" th:href="@{/css/alerts.css}">
   <style>
     /* Page-level layout only */
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
@@ -84,6 +85,23 @@
     </div>
 
     <div class="content">
+
+      <!-- ===== Flash messages (reusable) ===== -->
+      <div th:replace="~{fragments/alerts :: alerts}">
+        <div class="alerts-stack">
+          <div class="alert alert-error" role="alert" data-alert="error">
+            <span class="alert-icon">⚠️</span>
+            <div class="alert-body">
+              <div class="alert-title">2 erreur(s) détectée(s)</div>
+              <ul>
+                <li>Email déjà utilisé par un autre compte.</li>
+                <li>Le rôle "Administrateur" requiert une validation hiérarchique.</li>
+              </ul>
+            </div>
+            <button type="button" class="alert-close" data-alert-close aria-label="Fermer">✕</button>
+          </div>
+        </div>
+      </div>
 
       <!-- ===== KPI cards (reusable) ===== -->
       <div class="kpi-grid">
@@ -206,5 +224,6 @@
   <script src="../static/js/topbar.js" th:src="@{/js/topbar.js}" defer></script>
   <script src="../static/js/users.js" th:src="@{/js/users.js}" defer></script>
   <script src="../static/js/dialog.js" th:src="@{/js/dialog.js}" defer></script>
+  <script src="../static/js/alerts.js" th:src="@{/js/alerts.js}" defer></script>
 </body>
 </html>

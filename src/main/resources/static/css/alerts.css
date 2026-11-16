@@ -1,0 +1,59 @@
+/* ==========================================================
+   Alerts component — success / error / error list
+   Usage: fragment alerts()
+   Controller model attributes:
+     successMessage  : String
+     errorMessage    : String
+     errorMessages   : List<String>
+   ========================================================== */
+
+:root {
+  --al-success-bg: #f0fdf4;
+  --al-success-border: #bbf7d0;
+  --al-success-fg: #15803d;
+  --al-error-bg: #fef2f2;
+  --al-error-border: #fecaca;
+  --al-error-fg: #b91c1c;
+}
+
+.alerts-stack { display: flex; flex-direction: column; gap: 10px; }
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 14px;
+  animation: alert-in .2s ease;
+}
+@keyframes alert-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.alert-success { background: var(--al-success-bg); border-color: var(--al-success-border); color: var(--al-success-fg); }
+.alert-error   { background: var(--al-error-bg);   border-color: var(--al-error-border);   color: var(--al-error-fg); }
+
+.alert-icon { flex-shrink: 0; font-size: 16px; line-height: 1.4; }
+.alert-body { flex: 1; min-width: 0; }
+.alert-title { font-weight: 700; margin-bottom: 2px; }
+.alert ul { margin: 4px 0 0 18px; padding: 0; }
+.alert li { margin: 2px 0; }
+
+.alert-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  opacity: .55;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 3px;
+  border-radius: 6px;
+}
+.alert-close:hover { opacity: 1; background: rgba(0, 0, 0, .05); }
+
+.alert.fading { transition: opacity .3s ease, transform .3s ease; opacity: 0; transform: translateY(-6px); }
