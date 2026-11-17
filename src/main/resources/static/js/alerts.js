@@ -21,16 +21,18 @@
   }
 
   function init() {
-    document.querySelectorAll('.alert').forEach(function (alert) {
-      var closeBtn = alert.querySelector('[data-alert-close]');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function () { dismiss(alert); });
-      }
-      if (alert.getAttribute('data-alert') === 'success') {
-        setTimeout(function () { dismiss(alert); }, SUCCESS_TIMEOUT);
-      }
+    // delegation: also works for alerts injected at runtime
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-alert-close]');
+      if (btn) dismiss(btn.closest('.alert'));
+    });
+
+    document.querySelectorAll('.alert[data-alert="success"]').forEach(function (alert) {
+      setTimeout(function () { dismiss(alert); }, SUCCESS_TIMEOUT);
     });
   }
+
+  window.GridAppAlerts = { dismiss: dismiss };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

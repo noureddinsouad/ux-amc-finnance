@@ -15,10 +15,12 @@ src/main/resources/
 │   │   ├── users.html        # usersTable(users)
 │   │   ├── user-edit.html    # userEditForm(user)
 │   │   ├── dialog.html       # confirmDialog(title, message, confirmLabel, actionBase)
-│   │   └── alerts.html       # alerts() — success / error / error list
+│   │   ├── alerts.html       # alerts() — success / error / error list
+│   │   └── rapprochement.html# rapprochementTable(pageData) — server-paged table
 │   ├── index.html            # demo dashboard composing all fragments
 │   ├── users.html            # user management page
-│   └── user-edit.html        # user edit page
+│   ├── user-edit.html        # user edit page
+│   └── rapprochement.html    # listing rapprochement page
 └── static/
     ├── css/                  # one stylesheet per component
     │   ├── sidebar.css
@@ -28,14 +30,16 @@ src/main/resources/
     │   ├── users.css
     │   ├── user-edit.css
     │   ├── dialog.css
-    │   └── alerts.css
+    │   ├── alerts.css
+    │   └── rapprochement.css
     └── js/
         ├── sidebar.js        # sidebar interactivity (vanilla JS, no dependency)
         ├── topbar.js         # user dropdown interactivity
         ├── users.js          # users table: search, sort, pagination
         ├── user-edit.js      # edit form: toggle switch, validation
         ├── dialog.js         # confirm dialog open/close + dynamic form action
-        └── alerts.js         # alert dismiss + success auto-dismiss
+        ├── alerts.js         # alert dismiss + success auto-dismiss
+        └── rapprochement.js  # row selection, select-all, generate button state
 ```
 
 ## Components
@@ -158,6 +162,43 @@ model.addAttribute("errorMessages", List.of("Email déjà utilisé.", "Rôle inv
 ```
 
 All alerts are dismissible via ✕; accessible roles (`status` / `alert`) included.
+
+### Listing Rapprochement
+
+```html
+<div th:replace="~{fragments/rapprochement :: rapprochementTable(${pageData})}"></div>
+```
+
+7 columns: Référence, Date écriture, Libellé, Compte, Montant, Statut, and a
+selection **checkbox column** (`name="selectedIds"`, value = row id, plus a
+select-all in the header). The **Générer écritures compt. de régul** button sits
+outside the table, is enabled only when ≥ 1 row is selected, and posts the
+selected ID list to `POST /rapprochement/generer`.
+
+Pagination is **server-side** (10 per page): the footer links navigate to
+`GET /rapprochement?page=N&size=10`. `pageData` is a Spring Data `Page` with
+items `{ id, reference, dateEcriture, libelle, compte, montant, negatif, statut }`
+(`statut`: `done` / `todo` / `gap`).
+
+```java
+@GetMapping("/rapprochement")
+String list(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size, Model model) {
+  model.addAttribute("pageData", repo.findAll(PageRequest.of(page, size)));
+  return "rapprochement";
+}
+
+@PostMapping("/rapprochement/generer")
+String generer(@RequestParam List<Long> selectedIds, RedirectAttributes ra) {
+  service.genererEcritures(selectedIds);
+  ra.addFlashAttribute("successMessage",
+      "Écritures générées pour " + selectedIds.size() + " élément(s).");
+  return "redirect:/rapprochement";
+}
+```
+
+Demo page: `templates/rapprochement.html` (static preview simulates pagination
+and the generate action).
 
 ## Theming
 

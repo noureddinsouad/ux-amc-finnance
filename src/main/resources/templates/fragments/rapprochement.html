@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapprochement fragment</title>
+  <link rel="stylesheet" href="../../static/css/users.css" th:href="@{/css/users.css}">
+  <link rel="stylesheet" href="../../static/css/rapprochement.css" th:href="@{/css/rapprochement.css}">
+</head>
+<body>
+
+<!-- ============================================================
+     Listing Rapprochement fragment — server-side pagination.
+
+     Usage (Page supplied by the controller):
+       <div th:replace="~{fragments/rapprochement :: rapprochementTable(${pageData})}"></div>
+
+     pageData: Spring Data Page<Item> where Item =
+       { id, reference, dateEcriture, libelle, compte, montant, negatif, statut }
+       statut: 'done' | 'todo' | 'gap'
+     Pagination is server-side: links call GET /rapprochement?page=N&size=10.
+
+     The whole table is wrapped in a form: each row checkbox is
+     name="selectedIds" value="{id}", and the submit button posts to
+     POST /rapprochement/generer with the selected ID list.
+
+     Controller example:
+       @GetMapping("/rapprochement")
+       String list(@RequestParam(defaultValue="0") int page,
+                   @RequestParam(defaultValue="10") int size, Model model) {
+         model.addAttribute("pageData", repo.findAll(PageRequest.of(page, size)));
+         return "rapprochement";
+       }
+       @PostMapping("/rapprochement/generer")
+       String generer(@RequestParam List<Long> selectedIds, RedirectAttributes ra) {
+         service.genererEcritures(selectedIds);
+         ra.addFlashAttribute("successMessage", "Écritures générées pour " + selectedIds.size() + " élément(s).");
+         return "redirect:/rapprochement";
+       }
+
+     Requires: /css/users.css + /css/rapprochement.css, /js/rapprochement.js
+     ============================================================ -->
+<form method="post" action="#" th:action="@{/rapprochement/generer}"
+      th:fragment="rapprochementTable(pageData)" data-rapprochement>
+
+  <!-- Action bar outside the table -->
+  <div class="rap-action-bar">
+    <button type="submit" class="rap-btn" data-generate-btn disabled>
+      ⚙️ Générer écritures compt. de régul
+    </button>
+    <span class="rap-selected-count" data-selected-count>0 élément sélectionné</span>
+  </div>
+
+  <div class="data-table-card">
+    <div class="data-table-head">
+      <h2>Listing Rapprochement</h2>
+      <span class="data-table-count"
+            th:text="${pageData.totalElements} + ' éléments'">23 éléments</span>
+    </div>
+
+    <div class="data-table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th data-no-sort>Référence</th>
+            <th data-no-sort>Date écriture</th>
+            <th data-no-sort>Libellé</th>
+            <th data-no-sort>Compte</th>
+            <th data-no-sort style="text-align:right">Montant</th>
+            <th data-no-sort>Statut</th>
+            <th class="rap-check-col" data-no-sort>
+              <input type="checkbox" data-select-all aria-label="Tout sélectionner">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="item : ${pageData.content}" th:object="${item}">
+            <td th:text="*{reference}">RAP-0101</td>
+            <td th:text="*{dateEcriture}">10/11/2026</td>
+            <td th:text="*{libelle}">Régul. sinistres AUTO</td>
+            <td th:text="*{compte}">345100</td>
+            <td class="rap-amount" th:classappend="*{negatif} ? 'rap-amount-neg'"
+                th:text="*{montant}">12 450,00 €</td>
+            <td>
+              <span class="status-badge"
+                    th:classappend="|status-*{statut}|"
+                    th:text="*{statut == 'done'}  ? 'Rapproché' :
+                            (*{statut == 'todo'} ? 'À rapprocher' : 'Écart')">À rapprocher</span>
+            </td>
+            <td class="rap-check-col">
+              <input type="checkbox" name="selectedIds" value="101" th:value="*{id}"
+                     data-row-check th:attr="aria-label=|Sélectionner *{reference}|">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Server-side pagination -->
+    <div class="data-table-foot">
+      <span data-page-info
+            th:text="|Page ${pageData.number + 1} sur ${pageData.totalPages} — ${pageData.totalElements} éléments|">Page 1 sur 3 — 23 éléments</span>
+      <div class="spacer"></div>
+      <div class="rap-pagination">
+        <a href="#" th:href="@{/rapprochement(page=${pageData.number - 1}, size=${pageData.size})}"
+           th:classappend="${pageData.number == 0} ? 'disabled'"
+           th:attr="data-page-link=${pageData.number - 1}"
+           data-page-link="-1" aria-label="Page précédente">‹</a>
+        <a href="#" th:each="i : ${#numbers.sequence(0, pageData.totalPages - 1)}"
+           th:href="@{/rapprochement(page=${i}, size=${pageData.size})}"
+           th:classappend="${i == pageData.number} ? 'current'"
+           th:text="${i + 1}" th:attr="data-page-link=${i}"
+           data-page-link="0" data-page-num>1</a>
+        <a href="#" th:href="@{/rapprochement(page=${pageData.number + 1}, size=${pageData.size})}"
+           th:classappend="${pageData.number + 1 >= pageData.totalPages} ? 'disabled'"
+           th:attr="data-page-link=${pageData.number + 1}"
+           data-page-link="1" aria-label="Page suivante">›</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script src="../../static/js/rapprochement.js" th:src="@{/js/rapprochement.js}" defer></script>
+</body>
+</html>

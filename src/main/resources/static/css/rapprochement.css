@@ -1,0 +1,86 @@
+/* ==========================================================
+   Listing Rapprochement component
+   Usage: fragment rapprochementTable(pageData)
+   Requires: users.css (data-table base styles)
+   ========================================================== */
+
+:root {
+  --rap-accent: #16a34a;
+  --rap-border: #e2e8f0;
+  --rap-muted: #64748b;
+}
+
+/* ---------- Action bar (outside the table) ---------- */
+.rap-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.rap-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: var(--rap-accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.rap-btn:hover:not(:disabled) { filter: brightness(.95); }
+.rap-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.rap-selected-count {
+  font-size: 13px;
+  color: var(--rap-muted);
+  background: #fff;
+  border: 1px solid var(--rap-border);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.rap-selected-count.has-selection {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* ---------- Checkbox column ---------- */
+.rap-check-col { width: 48px; text-align: center; }
+.rap-check-col input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--rap-accent);
+  cursor: pointer;
+}
+
+/* ---------- Amount ---------- */
+.rap-amount { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+.rap-amount-neg { color: #dc2626; }
+
+/* ---------- Statut badges (extends users.css .status-badge) ---------- */
+.status-badge.status-done { background: #dcfce7; color: #15803d; }
+.status-badge.status-todo { background: #fef3c7; color: #b45309; }
+.status-badge.status-gap  { background: #fee2e2; color: #b91c1c; }
+
+/* ---------- Server-side pagination links ---------- */
+.rap-pagination { display: flex; gap: 6px; }
+.rap-pagination a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px; height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--rap-border);
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  text-decoration: none;
+}
+.rap-pagination a:hover:not(.current):not(.disabled) { background: #f8fafc; }
+.rap-pagination a.current { background: var(--rap-accent); border-color: var(--rap-accent); color: #fff; font-weight: 700; }
+.rap-pagination a.disabled { opacity: .4; pointer-events: none; }

@@ -54,6 +54,11 @@
       <span class="nav-icon">📊</span><span class="nav-label">Batch Compta Analytique</span>
     </a>
 
+    <a class="nav-item" href="../rapprochement.html" th:href="@{/rapprochement}"
+       th:classappend="${active == 'rapprochement'} ? 'active'" data-tooltip="Rapprochement">
+      <span class="nav-icon">🔄</span><span class="nav-label">Rapprochement</span>
+    </a>
+
     <a class="nav-item" href="#" th:href="@{/batch/autres}"
        th:classappend="${active == 'autres'} ? 'active'" data-tooltip="Batch Autres">
       <span class="nav-icon">🗂️</span><span class="nav-label">Batch Autres</span>
